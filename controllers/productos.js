@@ -22,6 +22,7 @@ const productosPost = async (req, res) => {
       });
     });
 };
+
 const productosDelete = async (req, res = response) => {
   const { id } = req.params;
   await Productos.findByIdAndDelete(id);
@@ -53,15 +54,15 @@ const productosGet = async (req = request, res = response) => {
 const productsGet = async (req = request, res = response) => {
   const productos = await Productos.find();
 
-  return res.status(200).json({
-    productos,
-  });
-
   if (!productos) {
     return res.status(404).json({
       message: "producto not found",
     });
   }
+
+  return res.status(200).json({
+    productos,
+  });
 };
 
 const productosPut = async (req, res = response) => {

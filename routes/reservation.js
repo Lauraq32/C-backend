@@ -14,11 +14,11 @@ const router = Router();
 
 router.post("/paciente",[
   //check('numeromovil', 'numeromovil is required').not().isEmpty(),
-  check('montoapagar', 'montoapagar is required').not().isEmpty(),
+  //check('montoapagar', 'montoapagar is required').not().isEmpty(),
   check('tipodepago', 'tipodepago is required').not().isEmpty(),
   check('doctoraId', 'doctoraId is required').not().isEmpty(),
   check('clienteId', 'clienteId is required').not().isEmpty(),
-  check('tratamientoId', 'tratamientoId is required').not().isEmpty(),
+  check('tratamientoPacienteId', 'tratamientoId is required').not().isEmpty(),
   //check('porciento', 'porciento is required').not().isEmpty(),
   validations
 ], reservationPost);

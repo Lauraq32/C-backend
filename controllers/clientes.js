@@ -63,8 +63,10 @@ const clientsGet = async (req = request, res = response) => {
       message: "Clientes not found",
     });
   }
+  const clienteObj = clientes.toObject();
   return res.status(200).json({
-    clientes,
+    ...clientes,
+    visitas: clienteObj.reservations.length,
   });
 };
 

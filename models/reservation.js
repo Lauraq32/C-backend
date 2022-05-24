@@ -21,7 +21,7 @@ const ReservationSchema = Schema({
     },
     doctora: { type: Schema.Types.ObjectId, ref: "Doctora" },
     cliente: { type: Schema.Types.ObjectId, ref: 'Clientes' },
-    tratamiento: { type: Schema.Types.ObjectId, ref: 'Tratamiento' },
+    tratamientoPaciente: { type: Schema.Types.ObjectId, ref: 'TratamientoPaciente' },
     porciento: {
         type: Number,
         //required: [true],

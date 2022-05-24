@@ -1,5 +1,6 @@
 const { response, request } = require("express");
 const Doctoras = require("../models/doctoras");
+const moment = require("moment");
 
 const doctorasPost = async (req, res) => {
   const doctoras = new Doctoras({
@@ -64,6 +65,32 @@ const doctorasGet = async (req = request, res = response) => {
   });
 };
 
+// metodo get
+// agregar campo de fecha para que aprezcan la informacion de los dias
+// actulizar el modelo
+//flitar las reservas por la fecha
+
+const GetReservationByDate = async (req = request, res = response) => {
+  const id = req.params.id;
+
+  const doctora = await Doctoras.findById(id).populate("reservations");
+  if (!doctora) {
+    return res.status(404).json({
+      message: "doctora not found",
+    });
+  }
+
+  const reservations = await reservations.find({
+    createdAt: {
+        $gte: moment().add(-10, "days"),
+    }
+  })
+
+  return res.status(200).json({
+    doctora
+  });
+};
+
 const doctoraGet = async (req = request, res = response) => {
   const id = req.params.id;
 
@@ -118,4 +145,5 @@ module.exports = {
   doctorasPut,
   doctorasDelete,
   doctoraGet,
+  GetReservationByDate
 };

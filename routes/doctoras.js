@@ -4,9 +4,10 @@ const { check } = require('express-validator');
 const { doctorasGet,
         doctorasDelete,
         doctorasPut,
-        doctorasPost } = require('../controllers/doctoras');
+        doctorasPost,
+        doctoraGet,
+        GetReservationByDate } = require('../controllers/doctoras');
 const { validations } = require("../middlewares/validations");
-const {user} = require("../helpers/dbValidators");
 const {jwtValidations} = require("../middlewares/jwt-validations");
 
 const router = Router();
@@ -18,11 +19,23 @@ router.post("/doctora",[
   validations
 ], doctorasPost);
 
-router.get('/information', [
+router.get('/ganancias', [
     jwtValidations,
     // check('id', 'is not a valid ID').isMongoId(),
     validations
 ], doctorasGet);
+
+router.get('/ganancias/:id', [
+    jwtValidations,
+    // check('id', 'is not a valid ID').isMongoId(),
+    validations
+], doctoraGet);
+
+router.get('/date/:id', [
+    jwtValidations,
+    // check('id', 'is not a valid ID').isMongoId(),
+    validations
+], GetReservationByDate);
 
 router.put('/update/:id',[
     jwtValidations,

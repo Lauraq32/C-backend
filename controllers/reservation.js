@@ -102,13 +102,13 @@ const { response, request } = require("express");
 const Reservation = require("../models/reservation");
 const Doctora = require("../models/doctoras");
 const Clientes = require("../models/clientes");
-const Tratamiento = require("../models/tratamiento");
+const TratamientoPaciente = require("../models/tratamientoPaciente");
 
 //relacionar esas cuotas con la reserva
 const reservationPost = async (req, res) => {
   const doctora = await Doctora.findById(req.body.doctoraId);
   const cliente = await Clientes.findById(req.body.clienteId);
-  const tratamiento = await Tratamiento.findById(req.body.tratamientoId);
+  const tratamiento = await TratamientoPaciente.findById(req.body.tratamientoPacienteId);
   const reservations = new Reservation({
     concepto: req.body.concepto,
     numeromovil: req.body.numeromovil,
@@ -117,7 +117,7 @@ const reservationPost = async (req, res) => {
     fecha: req.body.fecha,
     doctora: doctora._id,
     cliente: cliente._id,
-    tratamiento: tratamiento._id,
+    tratamientoPaciente: tratamiento._id,
     porciento: req.body.porciento,
   });
   reservations
@@ -156,7 +156,7 @@ const reservationDelete = async (req, res = response) => {
 
 const tablaGet = async (req = request, res = response) => {
   const id = req.params.id;
-  const reservation = await Reservation.findById(id).populate('doctora').populate('cliente')
+  const reservation = await Reservation.findById(id).populate('doctora').populate('cliente').populate('tratamientoPaciente').populate('tratamientoPaciente.tratamiento')
   
   if (!reservation) {
     return res.status(404).json({
@@ -196,16 +196,18 @@ const reservationPut = async (req, res = response) => {
   req.body.montoapagar * (req.body.porciento / 100);
   const doctora = await Doctora.findById(req.body.doctoraId);
   const cliente = await Clientes.findById(req.body.clienteId);
+  const tratamiento = await TratamientoPaciente.findById(req.body.tratamientoPacienteId);
 
   const updateOps = {
-    paciente: req.body.paciente,
-    tratamiento: req.body.tratamiento,
+    concepto: req.body.concepto,
     numeromovil: req.body.numeromovil,
     montoapagar: req.body.montoapagar,
     tipodepago: req.body.tipodepago,
-    porciento: req.body.porciento,
+    fecha: req.body.fecha,
     doctora: doctora._id,
-    cliente: cliente._id
+    cliente: cliente._id,
+    tratamientoPaciente: tratamiento._id,
+    porciento: req.body.porciento,
   };
 
   Reservation.updateOne({ _id: id }, { $set: updateOps })

@@ -8,6 +8,9 @@ const DoctoraSchema = Schema({
         type: String,
         required: [true],
     },
+    date: {
+        type: Date,
+    },
     reservations: [{ type: Schema.Types.ObjectId, ref: 'Reservation' }]
 });
 
