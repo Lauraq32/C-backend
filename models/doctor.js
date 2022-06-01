@@ -1,10 +1,10 @@
 const { Schema, model} = require('mongoose');
-const DoctoraSchema = Schema({
-    doctora: {
+const DoctorSchema = Schema({
+    doctor: {
         type: String,
-        required: [true, 'el nombre de la doctora es necesario'],
+        required: [true, 'el nombre de la doctor es necesario'],
     },
-    numeromovil: {
+    phone: {
         type: String,
         required: [true],
     },
@@ -15,4 +15,4 @@ const DoctoraSchema = Schema({
 });
 
 
-module.exports = model('Doctora', DoctoraSchema);
+module.exports = model('Doctor', DoctorSchema);

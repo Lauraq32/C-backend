@@ -7,19 +7,19 @@ const { reservationGet,
         reservationPost,
         tablaGet } = require('../controllers/reservation');
 const { validations } = require("../middlewares/validations");
-const {user} = require("../helpers/dbValidators");
 const {jwtValidations} = require("../middlewares/jwt-validations");
 
 const router = Router();
 
 router.post("/paciente",[
-  //check('numeromovil', 'numeromovil is required').not().isEmpty(),
-  //check('montoapagar', 'montoapagar is required').not().isEmpty(),
-  check('tipodepago', 'tipodepago is required').not().isEmpty(),
-  check('doctoraId', 'doctoraId is required').not().isEmpty(),
-  check('clienteId', 'clienteId is required').not().isEmpty(),
-  check('tratamientoPacienteId', 'tratamientoId is required').not().isEmpty(),
-  //check('porciento', 'porciento is required').not().isEmpty(),
+  check('concept', 'concept is required').not().isEmpty(),
+  check('phone', 'phone is required').not().isEmpty(),
+  check('amountpayable', 'amountpayable is required').not().isEmpty(),
+  check('paymenttype', 'paymenttype is required').not().isEmpty(),
+  check('doctorId', 'doctorId is required').not().isEmpty(),
+  check('clientId', 'clientId is required').not().isEmpty(),
+  check('patientTreatmentId', 'patientTreatmentId is required').not().isEmpty(),
+  check('percent', 'percent is required').not().isEmpty(),
   validations
 ], reservationPost);
 
@@ -34,18 +34,15 @@ router.get('/todos', [
     validations
 ], reservationGet);
 
-
 router.put('/update/:id',[
     jwtValidations,
     check('id', 'is not a valid ID').isMongoId(),
-    //check('id').custom(user),
     validations
 ], reservationPut);
 
 router.delete('/delete/:id', [
     jwtValidations,
     check('id', 'is not a valid ID').isMongoId(),
-    //check('id').custom(user),
     validations
 ], reservationDelete);
 

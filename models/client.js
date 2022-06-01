@@ -1,10 +1,10 @@
 const { Schema, model} = require('mongoose');
-const ClientesSchema = Schema({
-    paciente: {
+const ClientSchema = Schema({
+    patient: {
         type: String,
         required: [true, 'el nombre del paciente es necesario'],
     },
-    numeromovil: {
+    phone: {
         type: String,
         required: [true],
     },
@@ -19,4 +19,4 @@ const ClientesSchema = Schema({
     reservations: [{ type: Schema.Types.ObjectId, ref: 'Reservation' }]
 });
 
-module.exports = model('Clientes', ClientesSchema);
+module.exports = model('Client', ClientSchema);

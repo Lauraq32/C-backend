@@ -9,11 +9,11 @@ class Server {
         this.usersPath = '/api/users';
         this.authPath = '/api/auth';
         this.reservationPath = '/api/reservation';
-        this.clientesPath = '/api/clientes';
+        this.clientPath = '/api/clientes';
         this.productosPath = '/api/productos';
-        this.doctorasPath = '/api/doctoras';
-        this.tratamientoPath = '/api/tratamiento';
-        this.tratamientoPacientePath = '/api/paciente/tratamiento';
+        this.doctorPath = '/api/doctoras';
+        this.treatmentPath = '/api/tratamiento';
+        this.patientTreatmentPath = '/api/paciente/tratamiento';
     
         this.DataBase();
         this.middlewares();
@@ -34,11 +34,11 @@ class Server {
         this.app.use( this.usersPath, require('../routes/users'));
         this.app.use( this.authPath, require('../routes/auth'));
         this.app.use( this.reservationPath, require('../routes/reservation'));
-        this.app.use( this.clientesPath, require('../routes/clientes'));
+        this.app.use( this.clientPath, require('../routes/client'));
         this.app.use( this.productosPath, require('../routes/productos'));
-        this.app.use( this.doctorasPath, require('../routes/doctoras'));
-        this.app.use( this.tratamientoPath, require('../routes/tratamiento'));
-        this.app.use( this.tratamientoPacientePath, require('../routes/tratamientoPaciente'));
+        this.app.use( this.doctorPath, require('../routes/doctor'));
+        this.app.use( this.treatmentPath, require('../routes/treatment'));
+        this.app.use( this.patientTreatmentPath, require('../routes/patientTreatment'));
     }
 
     listen() {

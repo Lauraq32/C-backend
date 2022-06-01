@@ -7,7 +7,6 @@ const { productosGet,
         productosPost,
         productsGet } = require('../controllers/productos');
 const { validations } = require("../middlewares/validations");
-const {user} = require("../helpers/dbValidators");
 const {jwtValidations} = require("../middlewares/jwt-validations");
 
 const router = Router();
@@ -31,16 +30,14 @@ router.get('/todos', [
 ], productsGet);
 
 router.put('/actualizar/:id',[
-    //jwtValidations,
+    jwtValidations,
     check('id', 'is not a valid ID').isMongoId(),
-    //check('id').custom(user),
     validations
 ], productosPut);
 
 router.delete('/borrar/:id', [
     jwtValidations,
     check('id', 'is not a valid ID').isMongoId(),
-    //check('id').custom(user),
     validations
 ], productosDelete);
 

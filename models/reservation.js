@@ -1,30 +1,27 @@
 const { Schema, model} = require('mongoose');
 const ReservationSchema = Schema({
-    concepto: {
+    concept: {
         type: String,
     },
-    numeromovil: {
+    phone: {
         type: String,
         required: [true],
     },
-    fecha: {
+    date: {
         type: Date,
         required: [true, 'la fecha es necesaria'],
     },
-    montoapagar: {
+    amountpayable: {
         type: Number,
-        //required: [true, 'el total del tratamiento es necesario'],
     },
-    tipodepago: {
+    paymenttype: {
         type: String,
-        //required: [true, 'la forma de pago en necesaria'],
     },
-    doctora: { type: Schema.Types.ObjectId, ref: "Doctora" },
-    cliente: { type: Schema.Types.ObjectId, ref: 'Clientes' },
-    tratamientoPaciente: { type: Schema.Types.ObjectId, ref: 'TratamientoPaciente' },
-    porciento: {
+    doctor: { type: Schema.Types.ObjectId, ref: "Doctor" },
+    client: { type: Schema.Types.ObjectId, ref: 'Client' },
+    patientTreatment: { type: Schema.Types.ObjectId, ref: 'patientTreatment' },
+    percent: {
         type: Number,
-        //required: [true],
     },
 });
 

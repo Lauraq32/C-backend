@@ -1,17 +1,17 @@
-const Tratamiento = require("../models/tratamiento");
+const Treatment = require("../models/treatment");
 
 const tratamientoPost = async (req, res) => {
-  const tratamiento = new Tratamiento({
-    tratamiento: req.body.tratamiento,
+  const treatment = new Treatment({
+    treatment: req.body.treatment,
     total: req.body.total,
   });
 
   try {
-    const result = await tratamiento.save();
-    const tratamientoObj = result.toObject();
+    const result = await treatment.save();
+    const treatmentObj = result.toObject();
 
     return res.status(201).json({
-      ...tratamientoObj,
+      ...treatmentObj,
     });
   } catch (err) {
     console.log(`an error occurred ${err}`);
@@ -22,16 +22,16 @@ const tratamientoPost = async (req, res) => {
 
 const tratamientoGet = async (req = request, res = response) => {
   const id = req.params.id;
-  const tratamiento = await Tratamiento.findById(id);
+  const treatment = await Treatment.findById(id);
 
-  if (!tratamiento) {
+  if (!treatment) {
     return res.status(404).json({
       message: "tratamiento not found",
     });
   }
 
   return res.status(200).json({
-    tratamiento,
+    treatment,
   });
 };
 
@@ -40,11 +40,11 @@ const tratamientoPut = async (req, res = response) => {
   req.body.total - req.body.montoapagar;
 
   const updateOps = {
-    tratamiento: req.body.tratamiento,
+    treatment: req.body.treatment,
     total: req.body.total
   };
 
-  Tratamiento.updateOne({ _id: id }, { $set: updateOps })
+  Treatment.updateOne({ _id: id }, { $set: updateOps })
     .exec()
     .then(async () => {
       return res.status(200).json({
@@ -61,8 +61,8 @@ const tratamientoPut = async (req, res = response) => {
 
 const tratamientoDelete = async (req, res = response) => {
   const { id } = req.params;
-  await Tratamiento.findByIdAndDelete(id);
-  if (!Tratamiento) {
+  await Treatment.findByIdAndDelete(id);
+  if (!Treatment) {
     return res.status(404).json({
       message: "tratamiento not found",
     });

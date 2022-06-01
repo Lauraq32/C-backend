@@ -1,20 +1,19 @@
 const { response, request } = require("express");
-const Doctoras = require("../models/doctoras");
-const moment = require("moment");
+const Doctor = require("../models/doctor");
 
 const doctorasPost = async (req, res) => {
-  const doctoras = new Doctoras({
-    doctora: req.body.doctora,
-    numeromovil: req.body.numeromovil,
+  const doctor = new Doctor({
+    doctor: req.body.doctor,
+    phone: req.body.phone,
     totaldeganancias: 0,
   });
 
-  doctoras
+  doctor
     .save()
     .then(async (result) => {
-      const doctorasObj = result.toObject();
+      const doctorObj = result.toObject();
       return res.status(201).json({
-        ...doctorasObj,
+        ...doctorObj,
       });
     })
     .catch((err) => {
@@ -27,8 +26,8 @@ const doctorasPost = async (req, res) => {
 
 const doctorasDelete = async (req, res = response) => {
   const { id } = req.params;
-  const doctoras = await Doctoras.findByIdAndDelete(id);
-  if (!doctoras) {
+  const doctor = await Doctor.findByIdAndDelete(id);
+  if (!doctor) {
     return res.status(404).json({
       message: "doctora not found",
     });
@@ -39,18 +38,18 @@ const doctorasDelete = async (req, res = response) => {
 };
 
 const doctorasGet = async (req = request, res = response) => {
-  let doctoras = await Doctoras.find().populate("reservations");
-  if (!doctoras) {
+  let doctor = await Doctor.find().populate("reservations");
+  if (!doctor) {
     return res.status(404).json({
       message: "doctora not found",
     });
 }
 
-  doctoras = doctoras.map((doctora) => {
+  doctor = doctor.map((doctora) => {
     let totaldeganancias = 0;
 
     doctora.reservations.forEach((reservation) => {
-      const ganancia = reservation.montoapagar * (reservation.porciento / 100);
+      const ganancia = reservation.amountpayable * (reservation.percent / 100);
       totaldeganancias += ganancia;
     });
 
@@ -61,59 +60,32 @@ const doctorasGet = async (req = request, res = response) => {
   });
 
   return res.status(200).json({
-    doctoras,
-  });
-};
-
-// metodo get
-// agregar campo de fecha para que aprezcan la informacion de los dias
-// actulizar el modelo
-//flitar las reservas por la fecha
-
-const GetReservationByDate = async (req = request, res = response) => {
-  const id = req.params.id;
-
-  const doctora = await Doctoras.findById(id).populate("reservations");
-  if (!doctora) {
-    return res.status(404).json({
-      message: "doctora not found",
-    });
-  }
-  
-
-  const reservations = await reservations.find({
-    createdAt: {
-        $gte: moment().add(-10, "days"),
-    }
-  })
-
-  return res.status(200).json({
-    doctora
+    doctor,
   });
 };
 
 const doctoraGet = async (req = request, res = response) => {
   const id = req.params.id;
 
-  const doctora = await Doctoras.findById(id).populate("reservations");
-  if (!doctora) {
+  const doctor = await Doctor.findById(id).populate("reservations");
+  if (!doctor) {
     return res.status(404).json({
       message: "doctora not found",
     });
   }
   let totaldeganancias = 0;
-  doctora.reservations.forEach((reservation) => {
-    const ganancia = reservation.montoapagar * (reservation.porciento / 100);
+  doctor.reservations.forEach((reservation) => {
+    const ganancia = reservation.amountpayable * (reservation.percent / 100);
     totaldeganancias += ganancia;
   });
 
-  doctora.totaldeganancias = totaldeganancias;
+  doctor.totaldeganancias = totaldeganancias;
 
-  const result = doctora.toObject();
+  const result = doctor.toObject();
   result.totaldeganancias = totaldeganancias;
 
   return res.status(200).json({
-    doctora: result,
+    doctor: result,
   });
 };
 
@@ -122,10 +94,10 @@ const doctorasPut = async (req, res = response) => {
 
   const updateOps = {
     doctora: req.body.doctora,
-    numeromovil: req.body.numeromovil,
+    phone: req.body.phone,
   };
 
-  Doctoras.updateOne({ _id: id }, { $set: updateOps })
+  Doctor.updateOne({ _id: id }, { $set: updateOps })
     .exec()
     .then(async () => {
       return res.status(200).json({
@@ -146,5 +118,4 @@ module.exports = {
   doctorasPut,
   doctorasDelete,
   doctoraGet,
-  GetReservationByDate
 };

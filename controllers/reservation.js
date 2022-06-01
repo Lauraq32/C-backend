@@ -1,135 +1,34 @@
-/*const { response, request } = require("express");
-const { Types } = require('mongoose');
-const Reservation = require("../models/reservation");
-const Doctora = require("../models/doctoras");
-
-const reservationPost = async (req, res) => {
-  const doctora = await Doctora.findById(req.body.doctoraId);
-  const reservations = new Reservation({
-    paciente: req.body.paciente,
-    tratamiento: req.body.tratamiento,
-    numeromovil: req.body.numeromovil,
-    montoapagar: req.body.montoapagar,
-    tipodepago: req.body.tipodepago,
-    doctora: doctora._id,
-    porciento: req.body.porciento,
-  });
-  reservations
-    .save()
-    .then(async (result) => {
-      const reservationObj = result.toObject();
-      doctora.reservations.push(reservationObj._id)
-      await doctora.save();
-      res.status(201).json({
-        ...reservationObj,
-      });
-    })
-    .catch((err) => {
-      console.log(`an error occurred ${err}`);
-      res.status(404).json({
-        error: err,
-      });
-    });
-};
-const reservationDelete = async (req, res = response) => {
-  const { id } = req.params;
-  await Reservation.findByIdAndDelete(id, { status: false });
-  res.status(200).json({
-    message: "reservation deleted",
-  });
-};
-
-const reservationGet = async (req = request, res = response) => {
-  const id = req.params.id;
-  const reservation = await Reservation.findById(id).populate('doctora')
-  
-  res.status(200).json({
-    reservation,
-  });
-  // falta hacer la parte de cuando no exite la reserva
-};
-
-const reservacionGet = async (req = request, res = response) => {
-  const reservations = await Reservation.find();
-
-  res.status(200).json({
-    reservations,
-  });
-};
-
-const reservationPut = async (req, res = response) => {
-  const id = req.params.id;
-  req.body.montoapagar * (req.body.porciento / 100);
-  const doctora = await Doctora.findById(req.body.doctoraId);
-
-  const updateOps = {
-    paciente: req.body.paciente,
-    tratamiento: req.body.tratamiento,
-    numeromovil: req.body.numeromovil,
-    montoapagar: req.body.montoapagar,
-    tipodepago: req.body.tipodepago,
-    doctora: req.body.doctora,
-    porciento: req.body.porciento,
-    doctora: doctora._id
-
-  };
-
-  Reservation.updateOne({ _id: id }, { $set: updateOps })
-    .exec()
-    .then(async () => {
-      res.status(200).json({
-        message: "reservation updated",
-      });
-    })
-
-    .catch((err) => {
-      res.status(400).json({
-        error: err,
-      });
-    });
-};
-
-module.exports = {
-  reservationPost,
-  reservationGet,
-  reservationPut,
-  reservationDelete,
-  reservacionGet
-};
-*/
-
 const { response, request } = require("express");
 const Reservation = require("../models/reservation");
-const Doctora = require("../models/doctoras");
-const Clientes = require("../models/clientes");
-const TratamientoPaciente = require("../models/tratamientoPaciente");
+const Doctor = require("../models/doctor");
+const Client = require("../models/client");
+const patientTreatment = require("../models/patientTreatment");
 
-//relacionar esas cuotas con la reserva
 const reservationPost = async (req, res) => {
-  const doctora = await Doctora.findById(req.body.doctoraId);
-  const cliente = await Clientes.findById(req.body.clienteId);
-  const tratamiento = await TratamientoPaciente.findById(req.body.tratamientoPacienteId);
+  const doctor = await Doctor.findById(req.body.doctorId);
+  const client = await Client.findById(req.body.clientId);
+  const treatment = await patientTreatment.findById(req.body.patientTreatmentId);
   const reservations = new Reservation({
-    concepto: req.body.concepto,
-    numeromovil: req.body.numeromovil,
-    montoapagar: req.body.montoapagar,
-    tipodepago: req.body.tipodepago,
-    fecha: req.body.fecha,
-    doctora: doctora._id,
-    cliente: cliente._id,
-    tratamientoPaciente: tratamiento._id,
-    porciento: req.body.porciento,
+    concept: req.body.concept,
+    phone: req.body.phone,
+    amountpayable: req.body.amountpayable,
+    paymenttype: req.body.paymenttype,
+    date: req.body.date,
+    doctor: doctor._id,
+    client: client._id,
+    patientTreatment: treatment._id,
+    percent: req.body. percent,
   });
   reservations
     .save()
     .then(async (result) => {
       const reservationObj = result.toObject();
-      cliente.reservations.push(reservationObj._id)
-      doctora.reservations.push(reservationObj._id)
-      tratamiento.reservations.push(reservationObj._id)
-      await doctora.save();
-      await cliente.save();
-      await tratamiento.save();
+      client.reservations.push(reservationObj._id)
+      doctor.reservations.push(reservationObj._id)
+      treatment.reservations.push(reservationObj._id)
+      await doctor.save();
+      await client.save();
+      await treatment.save();
       return res.status(201).json({
         ...reservationObj,
       });
@@ -154,9 +53,43 @@ const reservationDelete = async (req, res = response) => {
   });
 };
 
+const GetEarningsByDate = async (req = request, res = response) => {
+  const firstDate = new Date(req.query.firstDate) 
+  let lastDate = new Date(req.query.lastDate).getTime() + 86400000
+  lastDate = new Date(lastDate)
+
+  const match = {
+    date: {$gte:firstDate, $lt:lastDate}
+  }
+  const group = {
+    _id: '$doctor',
+    payments: {$push: {'amount': '$amountpayable', 'percent': '$percent'}},
+    "total": {   "$sum": { $multiply: [ "$amountpayable", "$percent", 0.01 ]} }
+  }
+  const project = {
+    doctorId: '$_id',
+    payments: '$payments',
+    "_id": false,
+    "total": '$total'
+  }
+  const pipeline = [{$match: match}, {$group: group}, {$project: project}]
+
+
+  const earnings = await Reservation.aggregate(pipeline);
+  if (!Reservation) {
+    return res.status(404).json({
+      message: "doctora not found",
+    });
+  }
+
+  return res.status(200).json({
+    earnings,
+  });
+};
+
 const tablaGet = async (req = request, res = response) => {
   const id = req.params.id;
-  const reservation = await Reservation.findById(id).populate('doctora').populate('cliente').populate('tratamientoPaciente').populate('tratamientoPaciente.tratamiento')
+  const reservation = await Reservation.findById(id).populate('doctor').populate('client').populate('patientTreatment').populate('patientTreatment.treatment')
   
   if (!reservation) {
     return res.status(404).json({
@@ -193,21 +126,21 @@ const reservationGet = async (req = request, res = response) => {
 
 const reservationPut = async (req, res = response) => {
   const id = req.params.id;
-  req.body.montoapagar * (req.body.porciento / 100);
-  const doctora = await Doctora.findById(req.body.doctoraId);
-  const cliente = await Clientes.findById(req.body.clienteId);
-  const tratamiento = await TratamientoPaciente.findById(req.body.tratamientoPacienteId);
+  req.body.amountpayable * (req.body.percent / 100);
+  const doctor = await Doctor.findById(req.body.doctorId);
+  const client = await Client.findById(req.body.clientId);
+  const treatment = await patientTreatment.findById(req.body.patientTreatmentId);
 
   const updateOps = {
-    concepto: req.body.concepto,
-    numeromovil: req.body.numeromovil,
-    montoapagar: req.body.montoapagar,
-    tipodepago: req.body.tipodepago,
-    fecha: req.body.fecha,
-    doctora: doctora._id,
-    cliente: cliente._id,
-    tratamientoPaciente: tratamiento._id,
-    porciento: req.body.porciento,
+    concept: req.body.concept,
+    phone: req.body.phone,
+    amountpayable: req.body.amountpayable,
+    paymenttype: req.body.paymenttype,
+    date: req.body.date,
+    doctor: doctor._id,
+    client: client._id,
+    patientTreatment: treatment._id,
+    percent: req.body. percent,
   };
 
   Reservation.updateOne({ _id: id }, { $set: updateOps })
@@ -230,5 +163,6 @@ module.exports = {
   reservationGet,
   reservationPut,
   reservationDelete,
-  tablaGet
+  tablaGet,
+  GetEarningsByDate
 };

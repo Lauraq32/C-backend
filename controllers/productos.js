@@ -3,9 +3,9 @@ const Productos = require("../models/productos");
 
 const productosPost = async (req, res) => {
   const productos = new Productos({
-    productos: req.body.productos,
-    cantidad: req.body.cantidad,
-    precio: req.body.precio,
+    products: req.body.products,
+    amount: req.body.amount,
+    price: req.body.price,
   });
   productos
     .save()
@@ -69,9 +69,9 @@ const productosPut = async (req, res = response) => {
   const id = req.params.id;
 
   const updateOps = {
-    productos: req.body.productos,
-    cantidad: req.body.cantidad,
-    precio: req.body.precio,
+    products: req.body.products,
+    amount: req.body.amount,
+    price: req.body.price,
   };
 
   Productos.updateOne({ _id: id }, { $set: updateOps })

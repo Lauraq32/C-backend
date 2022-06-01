@@ -1,21 +1,20 @@
 const { response, request } = require("express");
-const Clientes = require("../models/clientes");
-const Reservation = require("../models/reservation");
+const Client = require("../models/client");
 
 const clientesPost = async (req, res) => {
-  const clientes = new Clientes({
-    paciente: req.body.paciente,
-    numeromovil: req.body.numeromovil,
+  const client = new Client({
+    patient: req.body.patient,
+    phone: req.body.phone,
     email: req.body.email,
     status: req.body.status
   });
 
   try {
-    const result = await clientes.save();
-    const clientesObj = result.toObject();
+    const result = await client.save();
+    const clientObj = result.toObject();
     
     return res.status(201).json({
-      ...clientesObj,
+      ...clientObj,
     });
   } catch (err) {
     console.log(`an error occurred ${err}`);
@@ -27,8 +26,8 @@ const clientesPost = async (req, res) => {
 const clientesDelete = async (req, res = response) => {
   const { id } = req.params;
 
-  await Clientes.findByIdAndDelete(id);
-  if (!Clientes) {
+  await Client.findByIdAndDelete(id);
+  if (!Client) {
     return res.status(404).json({
       message: "Clientes not found",
     });
@@ -40,33 +39,33 @@ const clientesDelete = async (req, res = response) => {
 
 const tablaGet = async (req = request, res = response) => {
   const id = req.params.id;
-  const cliente = await Clientes.findById(id).populate("reservations");
+  const client = await Client.findById(id).populate("reservations");
 
-  if (!cliente) {
+  if (!client) {
     return res.status(404).json({
       message: "reservation not found",
     });
   }
 
-  const clienteObj = cliente.toObject();
+  const clientObj = client.toObject();
   return res.status(200).json({
-    ...clienteObj,
-    visitas: clienteObj.reservations.length,
+    ...clientObj,
+    visitas: clientObj.reservations.length,
   });
 };
 
 const clientsGet = async (req = request, res = response) => {
-  const clientes = await Clientes.find().populate("reservations");
+  const client = await Client.find().populate("reservations");
 
-  if (!Clientes) {
+  if (!Client) {
     return res.status(404).json({
       message: "Clientes not found",
     });
   }
-  const clienteObj = clientes.toObject();
+  const clientObj = client.toObject();
   return res.status(200).json({
-    ...clientes,
-    visitas: clienteObj.reservations.length,
+    ...client,
+    visitas: clientObj.reservations.length,
   });
 };
 
@@ -74,13 +73,13 @@ const clientesPut = async (req, res = response) => {
   const id = req.params.id;
 
   const updateOps = {
-    paciente: req.body.paciente,
-    numeromovil: req.body.numeromovil,
+    patient: req.body.patient,
+    phone: req.body.phone,
     email: req.body.email,
     status: req.body.status
   };
 
-  Clientes.updateOne({ _id: id }, { $set: updateOps })
+  Client.updateOne({ _id: id }, { $set: updateOps })
     .exec()
     .then(async () => {
       return res.status(200).json({
