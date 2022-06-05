@@ -1,8 +1,9 @@
 const jwt = require('jsonwebtoken');
 const {response, request} = require("express");
 const {SECRETORPRIVATEKEY} = require('../config');
+const User = require('../models/user');
 
-const jwtValidations = ( req = request, res = response, next ) => {
+const jwtValidations = async( req = request, res = response, next ) => {
     const token = req.header('Authorization');
 
     if ( !token ) {
@@ -11,8 +12,9 @@ const jwtValidations = ( req = request, res = response, next ) => {
         });
     }
     try {
-         const payload = jwt.verify( token, SECRETORPRIVATEKEY );
-         console.log(payload);
+         const {uid} = jwt.verify( token, SECRETORPRIVATEKEY );
+         const user = await User.findById(uid);
+         req.user = user;
              next();
     } catch (error) {
         console.log(error);

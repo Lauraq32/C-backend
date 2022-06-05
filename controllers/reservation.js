@@ -63,14 +63,14 @@ const GetEarningsByDate = async (req = request, res = response) => {
   }
   const group = {
     _id: '$doctor',
-    payments: {$push: {'amount': '$amountpayable', 'percent': '$percent'}},
-    "total": {   "$sum": { $multiply: [ "$amountpayable", "$percent", 0.01 ]} }
+    payments: {$push: {'amount': '$amountpayable', 'percent': '$percent', 'date': '$date'}},
+    "total": {   "$sum": { $multiply: [ "$amountpayable", "$percent", 0.01 ]} },
   }
   const project = {
     doctorId: '$_id',
     payments: '$payments',
     "_id": false,
-    "total": '$total'
+    "total": '$total',
   }
   const pipeline = [{$match: match}, {$group: group}, {$project: project}]
 

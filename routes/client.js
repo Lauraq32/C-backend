@@ -9,6 +9,7 @@ const {
         tablaGet } = require('../controllers/client');
 const { validations } = require("../middlewares/validations");
 const {jwtValidations} = require("../middlewares/jwt-validations");
+const {AdminRole} = require("../middlewares/role-validation");
 
 const router = Router();
 
@@ -32,12 +33,14 @@ router.get('/prueba/:id', [
 
 router.put('/update/:id',[
     jwtValidations,
+    AdminRole,
     check('id', 'is not a valid ID').isMongoId(),
     validations
 ], clientesPut);
 
 router.delete('/delete/:id', [
     jwtValidations,
+    AdminRole,
     check('id', 'is not a valid ID').isMongoId(),
     validations
 ], clientesDelete);

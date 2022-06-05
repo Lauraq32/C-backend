@@ -37,11 +37,10 @@ const tratamientoGet = async (req = request, res = response) => {
 
 const tratamientoPut = async (req, res = response) => {
   const id = req.params.id;
-  req.body.total - req.body.montoapagar;
 
   const updateOps = {
     treatment: req.body.treatment,
-    total: req.body.total
+    total: req.body.total,
   };
 
   Treatment.updateOne({ _id: id }, { $set: updateOps })

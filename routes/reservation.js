@@ -8,6 +8,7 @@ const { reservationGet,
         tablaGet } = require('../controllers/reservation');
 const { validations } = require("../middlewares/validations");
 const {jwtValidations} = require("../middlewares/jwt-validations");
+const {AdminRole} = require("../middlewares/role-validation");
 
 const router = Router();
 
@@ -19,7 +20,6 @@ router.post("/paciente",[
   check('doctorId', 'doctorId is required').not().isEmpty(),
   check('clientId', 'clientId is required').not().isEmpty(),
   check('patientTreatmentId', 'patientTreatmentId is required').not().isEmpty(),
-  check('percent', 'percent is required').not().isEmpty(),
   validations
 ], reservationPost);
 
@@ -36,12 +36,14 @@ router.get('/todos', [
 
 router.put('/update/:id',[
     jwtValidations,
+    AdminRole,
     check('id', 'is not a valid ID').isMongoId(),
     validations
 ], reservationPut);
 
 router.delete('/delete/:id', [
     jwtValidations,
+    AdminRole,
     check('id', 'is not a valid ID').isMongoId(),
     validations
 ], reservationDelete);
