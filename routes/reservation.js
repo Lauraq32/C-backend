@@ -20,17 +20,18 @@ router.post("/paciente",[
   check('doctorId', 'doctorId is required').not().isEmpty(),
   check('clientId', 'clientId is required').not().isEmpty(),
   check('patientTreatmentId', 'patientTreatmentId is required').not().isEmpty(),
+  check('productIds', 'productIds is required').not().isEmpty(),
   validations
 ], reservationPost);
 
 router.get('/information/:id', [
-    jwtValidations,
+    //jwtValidations,
     check('id', 'is not a valid ID').isMongoId(),
     validations
 ], tablaGet);
 
 router.get('/todos', [
-    jwtValidations,
+    //jwtValidations,
     validations
 ], reservationGet);
 

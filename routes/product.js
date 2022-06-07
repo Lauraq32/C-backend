@@ -5,7 +5,7 @@ const { productosGet,
         productosDelete,
         productosPut,
         productosPost,
-        productsGet } = require('../controllers/productos');
+        productsGet } = require('../controllers/product');
 const { validations } = require("../middlewares/validations");
 const {jwtValidations} = require("../middlewares/jwt-validations");
 const {AdminRole} = require("../middlewares/role-validation");
@@ -13,9 +13,9 @@ const {AdminRole} = require("../middlewares/role-validation");
 const router = Router();
 
 router.post("/almacen",[
-  check('productos', 'producto is required').not().isEmpty(),
-  check('cantidad', 'cantidad is required').not().isEmpty(),
-  check('precio', 'precio is required').not().isEmpty(),
+  check('products', 'products is required').not().isEmpty(),
+  check('amount', 'amount is required').not().isEmpty(),
+  check('price', 'price is required').not().isEmpty(),
   validations
 ], productosPost);
 
@@ -27,8 +27,8 @@ router.get('/cantidad/:id', [
 ], productosGet);
 
 router.get('/todos', [
-    jwtValidations,
-    AdminRole,
+    //jwtValidations,
+    //AdminRole,
     validations
 ], productsGet);
 

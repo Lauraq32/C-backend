@@ -10,7 +10,7 @@ class Server {
         this.authPath = '/api/auth';
         this.reservationPath = '/api/reservation';
         this.clientPath = '/api/clientes';
-        this.productosPath = '/api/productos';
+        this.productPath = '/api/productos';
         this.doctorPath = '/api/doctoras';
         this.treatmentPath = '/api/tratamiento';
         this.patientTreatmentPath = '/api/paciente/tratamiento';
@@ -35,7 +35,7 @@ class Server {
         this.app.use( this.authPath, require('../routes/auth'));
         this.app.use( this.reservationPath, require('../routes/reservation'));
         this.app.use( this.clientPath, require('../routes/client'));
-        this.app.use( this.productosPath, require('../routes/productos'));
+        this.app.use( this.productPath, require('../routes/product'));
         this.app.use( this.doctorPath, require('../routes/doctor'));
         this.app.use( this.treatmentPath, require('../routes/treatment'));
         this.app.use( this.patientTreatmentPath, require('../routes/patientTreatment'));

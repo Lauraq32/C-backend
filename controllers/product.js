@@ -1,8 +1,8 @@
 const { response, request } = require("express");
-const Productos = require("../models/productos");
+const Product = require("../models/product");
 
 const productosPost = async (req, res) => {
-  const productos = new Productos({
+  const productos = new Product({
     products: req.body.products,
     amount: req.body.amount,
     price: req.body.price,
@@ -10,9 +10,9 @@ const productosPost = async (req, res) => {
   productos
     .save()
     .then(async (result) => {
-      const productosObj = result.toObject();
+      const ProductObj = result.toObject();
       return res.status(201).json({
-        ...productosObj,
+        ...ProductObj,
       });
     })
     .catch((err) => {
@@ -25,8 +25,8 @@ const productosPost = async (req, res) => {
 
 const productosDelete = async (req, res = response) => {
   const { id } = req.params;
-  await Productos.findByIdAndDelete(id);
-  if (!Productos) {
+  await Product.findByIdAndDelete(id);
+  if (!Product) {
     return res.status(404).json({
       message: "Productos not found",
     });
@@ -39,7 +39,7 @@ const productosDelete = async (req, res = response) => {
 const productosGet = async (req = request, res = response) => {
   const id = req.params.id;
 
-  Productos.findOne({ _id: id }).then((doc) => {
+  Product.findOne({ _id: id }).then((doc) => {
     console.log("from database", doc);
     if (doc) {
       return res.status(200).json({
@@ -52,16 +52,16 @@ const productosGet = async (req = request, res = response) => {
 };
 
 const productsGet = async (req = request, res = response) => {
-  const productos = await Productos.find();
+  const Products = await Product.find();
 
-  if (!productos) {
+  if (!Product) {
     return res.status(404).json({
       message: "producto not found",
     });
   }
 
   return res.status(200).json({
-    productos,
+    Products,
   });
 };
 
@@ -74,7 +74,7 @@ const productosPut = async (req, res = response) => {
     price: req.body.price,
   };
 
-  Productos.updateOne({ _id: id }, { $set: updateOps })
+  Product.updateOne({ _id: id }, { $set: updateOps })
     .exec()
     .then(async () => {
       return res.status(200).json({

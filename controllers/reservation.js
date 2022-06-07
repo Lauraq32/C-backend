@@ -3,11 +3,14 @@ const Reservation = require("../models/reservation");
 const Doctor = require("../models/doctor");
 const Client = require("../models/client");
 const patientTreatment = require("../models/patientTreatment");
+const Product = require("../models/product");
 
 const reservationPost = async (req, res) => {
   const doctor = await Doctor.findById(req.body.doctorId);
   const client = await Client.findById(req.body.clientId);
   const treatment = await patientTreatment.findById(req.body.patientTreatmentId);
+  const productIds = req.body.productIds
+
   const reservations = new Reservation({
     concept: req.body.concept,
     phone: req.body.phone,
@@ -17,6 +20,7 @@ const reservationPost = async (req, res) => {
     doctor: doctor._id,
     client: client._id,
     patientTreatment: treatment._id,
+    products: productIds,
     percent: req.body. percent,
   });
   reservations
@@ -26,6 +30,13 @@ const reservationPost = async (req, res) => {
       client.reservations.push(reservationObj._id)
       doctor.reservations.push(reservationObj._id)
       treatment.reservations.push(reservationObj._id)
+
+      //descontar productos del inventario
+      for (let i = 0; i < productIds.length; i++) {
+        const query = { $inc: { "amount": -1 }}
+        await Product.findByIdAndUpdate(productIds[i], query);
+      }
+
       await doctor.save();
       await client.save();
       await treatment.save();
@@ -126,10 +137,10 @@ const reservationGet = async (req = request, res = response) => {
 
 const reservationPut = async (req, res = response) => {
   const id = req.params.id;
-  req.body.amountpayable * (req.body.percent / 100);
   const doctor = await Doctor.findById(req.body.doctorId);
   const client = await Client.findById(req.body.clientId);
   const treatment = await patientTreatment.findById(req.body.patientTreatmentId);
+  const productIds = req.body.productIds
 
   const updateOps = {
     concept: req.body.concept,
@@ -140,6 +151,7 @@ const reservationPut = async (req, res = response) => {
     doctor: doctor._id,
     client: client._id,
     patientTreatment: treatment._id,
+    products: productIds,
     percent: req.body. percent,
   };
 
