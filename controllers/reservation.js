@@ -114,6 +114,29 @@ const tablaGet = async (req = request, res = response) => {
 
 };
 
+const getReservationByDate = async (req = request, res = response) => {
+  const firstDate = new Date(req.query.firstDate) 
+  let lastDate = new Date(req.query.lastDate).getTime() + 86400000
+  lastDate = new Date(lastDate)
+
+  const match = {
+    date: {$gte:firstDate, $lt:lastDate}
+  }
+
+  const pipeline = [{$match: match}]
+
+  const reservation = await Reservation.aggregate(pipeline);
+  if (!Reservation) {
+    return res.status(404).json({
+      message: "Reservation not found",
+    });
+  }
+
+  return res.status(200).json({
+    reservation
+  })
+}
+
 const reservationGet = async (req = request, res = response) => {
   const reservations = await Reservation.find();
 
@@ -176,5 +199,6 @@ module.exports = {
   reservationPut,
   reservationDelete,
   tablaGet,
-  GetEarningsByDate
+  GetEarningsByDate,
+  getReservationByDate
 };

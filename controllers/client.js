@@ -55,17 +55,10 @@ const tablaGet = async (req = request, res = response) => {
 };
 
 const clientsGet = async (req = request, res = response) => {
-  const client = await Client.find().populate("reservations");
+  const clients = await Client.find().populate("reservations");
 
-  if (!Client) {
-    return res.status(404).json({
-      message: "Clientes not found",
-    });
-  }
-  const clientObj = client.toObject();
   return res.status(200).json({
-    ...client,
-    visitas: clientObj.reservations.length,
+    clients,
   });
 };
 

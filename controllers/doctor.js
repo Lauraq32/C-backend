@@ -43,7 +43,7 @@ const doctorasGet = async (req = request, res = response) => {
     return res.status(404).json({
       message: "doctora not found",
     });
-}
+  }
 
   doctor = doctor.map((doctora) => {
     let totaldeganancias = 0;

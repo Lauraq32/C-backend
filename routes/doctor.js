@@ -20,20 +20,20 @@ router.post("/doctora",[
 ], doctorasPost);
 
 router.get('/ganancias', [
-    //jwtValidations,
-    //AdminRole,
+    jwtValidations,
+    AdminRole,
     validations
 ], doctorasGet);
 
 router.get('/porciento', [
-    //jwtValidations,
-    //AdminRole,
+    jwtValidations,
+    AdminRole,
     validations
 ], GetEarningsByDate);
 
 router.get('/ganancias/:id', [
-    //jwtValidations,
-    //AdminRole,
+    jwtValidations,
+    AdminRole,
     check('id', 'is not a valid ID').isMongoId(),
     validations
 ], doctoraGet);

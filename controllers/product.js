@@ -40,7 +40,6 @@ const productosGet = async (req = request, res = response) => {
   const id = req.params.id;
 
   Product.findOne({ _id: id }).then((doc) => {
-    console.log("from database", doc);
     if (doc) {
       return res.status(200).json({
         productos: doc,

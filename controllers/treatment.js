@@ -35,6 +35,20 @@ const tratamientoGet = async (req = request, res = response) => {
   });
 };
 
+const tratamientosGet = async (req = request, res = response) => {
+  const treatment = await Treatment.find();
+
+  if (!treatment) {
+    return res.status(404).json({
+      message: "tratamiento not found",
+    });
+  }
+
+  return res.status(200).json({
+    treatment,
+  });
+};
+
 const tratamientoPut = async (req, res = response) => {
   const id = req.params.id;
 
@@ -71,12 +85,10 @@ const tratamientoDelete = async (req, res = response) => {
   });
 };
 
-//TAREA
-//hacer el get de tratamiento con populate.
-
 module.exports = {
   tratamientoPost,
   tratamientoGet,
   tratamientoDelete,
-  tratamientoPut
+  tratamientoPut,
+  tratamientosGet
 };

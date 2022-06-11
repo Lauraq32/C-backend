@@ -87,32 +87,8 @@ const cuotaGetById = async (req, res) => {
   }
 }
 
-const cuotaGet = async (req, res) => {
-  try {
-    const tratamientoDelPaciente = await patientTreatment.find().populate("reservations").populate("treatment");
-
-    let pagado = 0;
-
-    for (let reservation of tratamientoDelPaciente.reservations) {
-      pagado += reservation.amountpayable;
-    }
-    
-    const deuda = tratamientoDelPaciente.treatment.total - pagado;
-    
-    const result = {
-      ...tratamientoDelPaciente.toObject(),
-      deuda
-    }
-
-    return res.status(200).json(result)
-  } catch (err) {
-    return res.status(500);
-  }
-};
-
 module.exports = {
   cuotaPost,
-  cuotaGet,
   cuotaGetById,
   treatmentPut,
   treatmentDelete

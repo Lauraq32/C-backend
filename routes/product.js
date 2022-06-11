@@ -27,8 +27,8 @@ router.get('/cantidad/:id', [
 ], productosGet);
 
 router.get('/todos', [
-    //jwtValidations,
-    //AdminRole,
+    jwtValidations,
+    AdminRole,
     validations
 ], productsGet);
 

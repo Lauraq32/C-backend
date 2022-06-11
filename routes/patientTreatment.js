@@ -3,7 +3,7 @@ const { check } = require('express-validator');
 const {validations} = require("../middlewares/validations");
 const {jwtValidations} = require("../middlewares/jwt-validations");
 const {AdminRole} = require("../middlewares/role-validation");
-const {cuotaPost, cuotaGet, cuotaGetById,  treatmentPut, treatmentDelete} = require("../controllers/patientTreatment");
+const {cuotaPost, cuotaGetById,  treatmentPut, treatmentDelete} = require("../controllers/patientTreatment");
 
 const router = Router();
 
@@ -13,13 +13,8 @@ router.post('/nuevo', [
   validations
 ], cuotaPost);
 
-router.get('/cuota', [
-    //jwtValidations,
-    validations
-], cuotaGet);
-
 router.get('/cuota/:id', [
-    //jwtValidations,
+    jwtValidations,
     validations
 ], cuotaGetById);
 
