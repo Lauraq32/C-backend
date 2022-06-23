@@ -14,6 +14,7 @@ class Server {
         this.doctorPath = '/api/doctoras';
         this.treatmentPath = '/api/tratamiento';
         this.patientTreatmentPath = '/api/paciente/tratamiento';
+        this.healthCheckerPath = '/api/healthcheck';
     
         this.DataBase();
         this.middlewares();
@@ -39,6 +40,7 @@ class Server {
         this.app.use( this.doctorPath, require('../routes/doctor'));
         this.app.use( this.treatmentPath, require('../routes/treatment'));
         this.app.use( this.patientTreatmentPath, require('../routes/patientTreatment'));
+        this.app.use( this.healthCheckerPath, require('../routes/healthChecker'));
     }
 
     listen() {
