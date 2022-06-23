@@ -42,7 +42,8 @@ class Server {
     }
 
     listen() {
-        this.app.listen(8080, console.log("server running on port 8080"));
+        const port = process.env.PORT || 8080
+        this.app.listen(port, console.log("server running on port 8080"));
     }
 }
 
