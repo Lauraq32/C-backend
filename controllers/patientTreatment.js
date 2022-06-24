@@ -87,9 +87,23 @@ const cuotaGetById = async (req, res) => {
   }
 }
 
+const cuotasGet = async (req, res) => {
+  try {
+    let tratamientoDelPaciente = await patientTreatment.find().populate("reservations").populate("treatment");
+
+    return res.status(200).json({
+      tratamientoDelPaciente
+    });
+  }
+  catch(error) {
+    return res.status(404).end()
+  }
+}
+
 module.exports = {
   cuotaPost,
   cuotaGetById,
+  cuotasGet,
   treatmentPut,
   treatmentDelete
 };
