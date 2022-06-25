@@ -39,8 +39,8 @@ router.get('/ganancias/:id', [
 ], doctoraGet);
 
 router.put('/update/:id',[
-    jwtValidations,
-    AdminRole,
+    //jwtValidations,
+    //AdminRole,
     check('id', 'is not a valid ID').isMongoId(),
     validations
 ], doctorasPut);

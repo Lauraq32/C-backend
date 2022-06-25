@@ -93,7 +93,7 @@ const doctorasPut = async (req, res = response) => {
   const id = req.params.id;
 
   const updateOps = {
-    doctora: req.body.doctora,
+    doctor: req.body.doctor,
     phone: req.body.phone,
   };
 
