@@ -1,4 +1,5 @@
 const { response, request } = require("express");
+const client = require("../models/client");
 const Client = require("../models/client");
 
 const clientesPost = async (req, res) => {
@@ -43,7 +44,7 @@ const tablaGet = async (req = request, res = response) => {
 
   if (!client) {
     return res.status(404).json({
-      message: "reservation not found",
+      message: "client not found",
     });
   }
 
@@ -55,12 +56,19 @@ const tablaGet = async (req = request, res = response) => {
 };
 
 const clientsGet = async (req = request, res = response) => {
-  const clients = await Client.find().populate("reservations");
+  const client = await Client.find().populate("reservations");
+
+  if (!client) {
+    return res.status(404).json({
+      message: "client not found",
+    });
+  }
 
   return res.status(200).json({
-    clients,
+    client
   });
-};
+}
+
 
 const clientesPut = async (req, res = response) => {
   const id = req.params.id;

@@ -98,22 +98,6 @@ const GetEarningsByDate = async (req = request, res = response) => {
   });
 };
 
-const tablaGet = async (req = request, res = response) => {
-  const id = req.params.id;
-  const reservation = await Reservation.findById(id).populate('doctor').populate('client').populate('patientTreatment').populate('patientTreatment.treatment')
-  
-  if (!reservation) {
-    return res.status(404).json({
-      message: "reservation not found",
-    });
-  }
-  
-  return res.status(200).json({
-    reservation,
-  });
-
-};
-
 const getReservationByDate = async (req = request, res = response) => {
   const firstDate = new Date(req.query.firstDate) 
   let lastDate = new Date(req.query.lastDate).getTime() + 86400000
@@ -138,13 +122,7 @@ const getReservationByDate = async (req = request, res = response) => {
 }
 
 const reservationGet = async (req = request, res = response) => {
-  const reservations = await Reservation.find();
-
-  //console.log("reservations id: ", reservations[2].doctora);
-
-  //const doctorasName = await Doctora.findById(reservations.doctoras);
-  //console.log("Here", doctoraName[2].doctora);
-
+  const reservations = await Reservation.find().populate("doctor").populate("client").populate("patientTreatment");
 
   if (!reservations) {
     return res.status(404).json({
@@ -154,7 +132,6 @@ const reservationGet = async (req = request, res = response) => {
 
   return res.status(200).json({
     reservations,
-    //doctorasName
   });
 };
 
@@ -198,7 +175,6 @@ module.exports = {
   reservationGet,
   reservationPut,
   reservationDelete,
-  tablaGet,
   GetEarningsByDate,
   getReservationByDate
 };

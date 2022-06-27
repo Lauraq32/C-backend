@@ -64,6 +64,7 @@ const Login = async(req, res = response) => {
             });
         }
         const token = await getJWT( user.id );
+        //guardar el token en una cookie y extraer de la cookie
   
         return res.json({
             user,

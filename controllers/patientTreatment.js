@@ -64,7 +64,7 @@ const treatmentDelete = async (req, res = response) => {
 
 const cuotaGetById = async (req, res) => {
   try {
-    let tratamientoDelPaciente = await patientTreatment.findById(req.params.id).populate("reservations").populate("treatment");
+    let tratamientoDelPaciente = await patientTreatment.findById(req.params.id).populate("reservations").populate("treatment").populate("client");
 
     let pagado = 0;
 
@@ -89,11 +89,23 @@ const cuotaGetById = async (req, res) => {
 
 const cuotasGet = async (req, res) => {
   try {
-    let tratamientoDelPaciente = await patientTreatment.find().populate("reservations").populate("treatment");
+    let tratamientoDelPacientes = await patientTreatment.find().populate("reservations").populate("treatment").populate("client");
 
-    return res.status(200).json({
-      tratamientoDelPaciente
+    const data = [];
+
+    tratamientoDelPacientes.forEach((tratamientoDelPaciente) => {
+      let pagado = 0;
+      tratamientoDelPaciente.reservations.forEach((reservation) => {
+        pagado += reservation.amountpayable
+      });
+
+      const deuda = tratamientoDelPaciente.treatment.total - pagado;
+      const result = tratamientoDelPaciente.toObject();
+      result.deuda = deuda;
+
+      data.push(result);
     });
+    return res.status(200).json(data)
   }
   catch(error) {
     return res.status(404).end()

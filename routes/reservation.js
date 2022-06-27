@@ -5,7 +5,6 @@ const { reservationGet,
         reservationDelete,
         reservationPut,
         reservationPost,
-        tablaGet,
         getReservationByDate } = require('../controllers/reservation');
 const { validations } = require("../middlewares/validations");
 const {jwtValidations} = require("../middlewares/jwt-validations");
@@ -24,12 +23,6 @@ router.post("/paciente",[
   check('productIds', 'productIds is required').not().isEmpty(),
   validations
 ], reservationPost);
-
-router.get('/information/:id', [
-    jwtValidations,
-    check('id', 'is not a valid ID').isMongoId(),
-    validations
-], tablaGet);
 
 router.get('/todos', [
     jwtValidations,
