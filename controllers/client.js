@@ -1,5 +1,4 @@
 const { response, request } = require("express");
-const client = require("../models/client");
 const Client = require("../models/client");
 
 const clientesPost = async (req, res) => {
@@ -7,13 +6,13 @@ const clientesPost = async (req, res) => {
     patient: req.body.patient,
     phone: req.body.phone,
     email: req.body.email,
-    status: req.body.status
+    status: req.body.status,
   });
 
   try {
     const result = await client.save();
     const clientObj = result.toObject();
-    
+
     return res.status(201).json({
       ...clientObj,
     });
@@ -56,19 +55,24 @@ const tablaGet = async (req = request, res = response) => {
 };
 
 const clientsGet = async (req = request, res = response) => {
-  const client = await Client.find().populate("reservations");
+  let fields = ['patient', 'phone', 'email', 'status']
 
-  if (!client) {
-    return res.status(404).json({
-      message: "client not found",
-    });
-  }
+  fields = fields.reduce((result, field) => {
+    result[field] = true
+    return result
+  },{})
 
+  const pipeline = [{
+    $project: {
+      ...fields,
+      visitas: {$size: "$reservations"}
+    }
+  }]
+  const clients = await Client.aggregate(pipeline);
   return res.status(200).json({
-    client
+    clients,
   });
-}
-
+};
 
 const clientesPut = async (req, res = response) => {
   const id = req.params.id;
@@ -77,7 +81,7 @@ const clientesPut = async (req, res = response) => {
     patient: req.body.patient,
     phone: req.body.phone,
     email: req.body.email,
-    status: req.body.status
+    status: req.body.status,
   };
 
   Client.updateOne({ _id: id }, { $set: updateOps })
@@ -100,5 +104,5 @@ module.exports = {
   clientesPut,
   clientesDelete,
   clientsGet,
-  tablaGet
+  tablaGet,
 };

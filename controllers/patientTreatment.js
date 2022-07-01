@@ -5,17 +5,19 @@ const patientTreatment = require("../models/patientTreatment");
 const cuotaPost = async (req, res) => {
   const client = await Client.findById(req.body.clientId);
   const treatment = await Treatment.findById(req.body.treatmentId);
-  const patientTreatments = new patientTreatment({
+  const newPatientTreatment = new patientTreatment({
     treatment: treatment._id,
     client: client._id,
   });
 
   try {
-    const result = await patientTreatments.save();
-    const patientTreatmentObj = result.toObject();
+    const result = await newPatientTreatment.save();
+    const newPatientTreatmentObj = result.toObject();
+    client.patientTreatments.push(newPatientTreatmentObj._id);
+    await client.save();
 
     return res.status(201).json({
-      ...patientTreatmentObj,
+      ...newPatientTreatmentObj,
     });
   } catch (err) {
     console.log(`an error occurred ${err}`);
@@ -87,6 +89,8 @@ const cuotaGetById = async (req, res) => {
   }
 }
 
+//hacer get by id del paciente que muestre sus tratamientos
+
 const cuotasGet = async (req, res) => {
   try {
     let tratamientoDelPacientes = await patientTreatment.find().populate("reservations").populate("treatment").populate("client");
@@ -117,5 +121,5 @@ module.exports = {
   cuotaGetById,
   cuotasGet,
   treatmentPut,
-  treatmentDelete
+  treatmentDelete,
 };

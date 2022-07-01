@@ -16,7 +16,8 @@ const ClientSchema = Schema({
         type: Boolean,
         default: true
     },
-    reservations: [{ type: Schema.Types.ObjectId, ref: 'Reservation' }]
+    reservations: [{ type: Schema.Types.ObjectId, ref: 'Reservation' }],
+    patientTreatments: [{ type: Schema.Types.ObjectId, ref: 'patientTreatment' }]
 });
 
 module.exports = model('Client', ClientSchema);

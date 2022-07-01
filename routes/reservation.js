@@ -5,7 +5,8 @@ const { reservationGet,
         reservationDelete,
         reservationPut,
         reservationPost,
-        getReservationByDate } = require('../controllers/reservation');
+        getReservationByDate,
+        getClientByTreatment } = require('../controllers/reservation');
 const { validations } = require("../middlewares/validations");
 const {jwtValidations} = require("../middlewares/jwt-validations");
 const {AdminRole} = require("../middlewares/role-validation");
@@ -28,6 +29,11 @@ router.get('/todos', [
     jwtValidations,
     validations
 ], reservationGet);
+
+router.get('/client/:id', [
+    jwtValidations,
+    validations
+], getClientByTreatment);
 
 router.get('/date', [
     jwtValidations,

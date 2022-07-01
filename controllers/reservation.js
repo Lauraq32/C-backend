@@ -98,6 +98,19 @@ const GetEarningsByDate = async (req = request, res = response) => {
   });
 };
 
+const getClientByTreatment = async (req = request, res = response) => {
+  try {
+   const clients = await Client.findById(req.params.id).populate("patientTreatments");
+ 
+   return res.status(200).json({
+     clients,
+   });
+  }
+  catch(error) {
+    return res.status(404).end()
+  }
+};
+
 const getReservationByDate = async (req = request, res = response) => {
   const firstDate = new Date(req.query.firstDate) 
   let lastDate = new Date(req.query.lastDate).getTime() + 86400000
@@ -176,5 +189,6 @@ module.exports = {
   reservationPut,
   reservationDelete,
   GetEarningsByDate,
-  getReservationByDate
+  getReservationByDate,
+  getClientByTreatment
 };

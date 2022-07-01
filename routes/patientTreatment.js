@@ -18,7 +18,6 @@ router.get('/cuota/:id', [
     validations
 ], cuotaGetById);
 
-
 router.get('/cuotas', [
   jwtValidations,
   validations
