@@ -21,7 +21,7 @@ router.post("/nuevo",[
 ], clientesPost);
 
 router.get('/todos', [
-    //jwtValidations,
+    jwtValidations,
     validations
 ], clientsGet);
 
