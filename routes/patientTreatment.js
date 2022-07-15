@@ -14,13 +14,12 @@ router.post('/nuevo', [
 ], cuotaPost);
 
 router.get('/cuota/:id', [
-    //jwtValidations,
+    jwtValidations,
     validations
 ], cuotaGetById);
 
-
 router.get('/cuotas', [
-  //jwtValidations,
+  jwtValidations,
   validations
 ], cuotasGet);
 
