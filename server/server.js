@@ -6,17 +6,7 @@ class Server {
 
     constructor() {
         this.app  = express();
-        this.usersPath = '/api/users';
-        this.authPath = '/api/auth';
-        this.reservationPath = '/api/reservation';
-        this.clientPath = '/api/clientes';
-        this.productPath = '/api/productos';
-        this.doctorPath = '/api/doctoras';
-        this.treatmentPath = '/api/tratamiento';
-        this.patientTreatmentPath = '/api/paciente/tratamiento';
-        this.healthCheckerPath = '/api/healthcheck';
-
-    
+        
         this.DataBase();
         this.middlewares();
         this.routes();
@@ -33,17 +23,15 @@ class Server {
     }
 
     routes() {
-        this.app.use( this.usersPath, require('../routes/users'));
-        this.app.use( this.authPath, require('../routes/auth'));
-        this.app.use( this.reservationPath, require('../routes/reservation'));
-        this.app.use( this.clientPath, require('../routes/client'));
-        this.app.use( this.productPath, require('../routes/product'));
-        this.app.use( this.doctorPath, require('../routes/doctor'));
-        this.app.use( this.treatmentPath, require('../routes/treatment'));
-        this.app.use( this.patientTreatmentPath, require('../routes/patientTreatment'));
-        this.app.use( this.healthCheckerPath, require('../routes/healthChecker'));
-
         this.app.use('/api/patients', require('../routes/patients'));
+        this.app.use('/api/reservations', require('../routes/reservations'));
+        this.app.use('/api/doctors', require('../routes/doctors'));
+        this.app.use('/api/patients/treatments', require('../routes/patientTreatments'));
+        this.app.use('/api/products', require('../routes/products'));
+        this.app.use('/api/treatments', require('../routes/treatments'));
+        this.app.use('/api/auth', require('../routes/auth'));
+        this.app.use('/api/users', require('../routes/users'));
+        this.app.use('/api/health', require('../routes/healthChecker'));
     }
 
     listen() {

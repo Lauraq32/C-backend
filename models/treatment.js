@@ -6,7 +6,7 @@ const treatmentSchema = Schema({
   },
   total: {
     type: Number,
-    required: [true, "el total es necesario"],
+    required: [true],
   },
 });
 

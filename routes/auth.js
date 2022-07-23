@@ -1,24 +1,16 @@
-const { Router } = require('express');
-const { check } = require('express-validator');
-const {validations} = require("../middlewares/validations");
-const {Login, usersPost} = require("../controllers/users");
-const {emailValidation} = require("../helpers/dbValidators");
+const { Router } = require("express");
+const { validations } = require("../middlewares/validations");
+const UserController = require("../controllers/UserController");
+const validateSignup = require("../validators/validateSignup");
+const validateLogin = require("../validators/validateLogin");
 
+// base path: api/users
 const router = Router();
 
-router.post('/login', [
-  check('email', 'email is not valid').isEmail(),
-  check('password', 'password is required').not().isEmpty(),
-  validations
-], Login);
+// write operations
+router.post("/signup", validateSignup, UserController.post);
+router.post("/login", validateLogin, UserController.login);
 
-router.post("/signup",[
-  check('name', 'name is required').not().isEmpty(),
-  check('lastname', 'lastname is required').not().isEmpty(),
-  check('rol', 'rol is required').not().isEmpty(),
-  check('password', 'password is required').not().isEmpty(),
-  check('email').custom(emailValidation),
-  validations
-], usersPost);
+router.use(validations);
 
 module.exports = router;
