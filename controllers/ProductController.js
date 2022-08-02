@@ -4,7 +4,7 @@ const Product = require("../models/product");
 class ProductController {
   static async post(req, res) {
     const product = new Product({
-      products: req.body.products,
+      name: req.body.name,
       amount: req.body.amount,
       price: req.body.price,
     });
@@ -60,7 +60,7 @@ class ProductController {
       const { id } = req.params;
 
       const fields = {
-        products: req.body.products,
+        name: req.body.name,
         amount: req.body.amount,
         price: req.body.price,
       };

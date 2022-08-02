@@ -1,10 +1,10 @@
 const { response, request } = require("express");
-const Client = require("../models/client");
+const Patient = require("../models/patient");
 
 class PatientController {
   static async post(req, res) {
-    const patient = new Client({
-      patient: req.body.patient,
+    const patient = new Patient({
+      name: req.body.name,
       phone: req.body.phone,
       email: req.body.email,
       status: req.body.status,
@@ -24,7 +24,7 @@ class PatientController {
     const { id } = req.params;
 
     try {
-      const patient = await Client.findById(id).populate("reservations");
+      const patient = await Patient.findById(id).populate("reservations");
 
       if (!patient) {
         return res.status(404).end();
@@ -43,7 +43,7 @@ class PatientController {
 
   static async getAll(req, res) {
     try {
-      let fields = ["patient", "phone", "email", "status"];
+      let fields = ["name", "phone", "email", "status"];
 
       fields = fields.reduce((result, field) => {
         result[field] = true;
@@ -56,8 +56,10 @@ class PatientController {
           visitas: { $size: "$reservations" },
         },
       }];
-      const patients = await Client.aggregate(pipeline);
-      return res.status(200).json(patients);
+      const patients = await Patient.aggregate(pipeline);
+      return res.status(200).json({
+        patients
+      });
     } catch (error) {
       return res.status(500).end();
     }
@@ -74,7 +76,7 @@ class PatientController {
         status: req.body.status,
       };
 
-      await Client.updateOne({ _id: id }, { $set: fields });
+      await Patient.updateOne({ _id: id }, { $set: fields });
 
       return res.status(200).json({
         message: "paciente actualizado",
@@ -89,7 +91,7 @@ class PatientController {
     const { id } = req.params;
 
     try {
-      await Client.findByIdAndDelete(id);
+      await Patient.findByIdAndDelete(id);
 
       return res.status(200).json({
         message: "paciente borrado",

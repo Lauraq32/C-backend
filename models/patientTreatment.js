@@ -2,7 +2,7 @@ const { Schema, model } = require("mongoose");
 
 const schema = Schema({
   treatment: {type: Schema.Types.ObjectId, ref: 'Treatment'},
-  client: { type: Schema.Types.ObjectId, ref: 'Client' },
+  patient: { type: Schema.Types.ObjectId, ref: 'Patient' },
   reservations: [{ type: Schema.Types.ObjectId, ref: "Reservation" }],
 });
 

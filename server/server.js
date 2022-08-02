@@ -23,10 +23,10 @@ class Server {
     }
 
     routes() {
+        this.app.use('/api/patients/treatments', require('../routes/patientTreatments'));
         this.app.use('/api/patients', require('../routes/patients'));
         this.app.use('/api/reservations', require('../routes/reservations'));
         this.app.use('/api/doctors', require('../routes/doctors'));
-        this.app.use('/api/patients/treatments', require('../routes/patientTreatments'));
         this.app.use('/api/products', require('../routes/products'));
         this.app.use('/api/treatments', require('../routes/treatments'));
         this.app.use('/api/auth', require('../routes/auth'));

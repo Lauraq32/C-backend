@@ -1,6 +1,6 @@
 const { Schema, model} = require('mongoose');
-const ClientSchema = Schema({
-    patient: {
+const PatientSchema = Schema({
+    name: {
         type: String,
         required: [true, 'el nombre del paciente es necesario'],
     },
@@ -20,4 +20,4 @@ const ClientSchema = Schema({
     patientTreatments: [{ type: Schema.Types.ObjectId, ref: 'patientTreatment' }]
 });
 
-module.exports = model('Client', ClientSchema);
+module.exports = model('Patient', PatientSchema);

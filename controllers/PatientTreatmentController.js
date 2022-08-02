@@ -1,21 +1,21 @@
-const Client = require("../models/client");
+const Patient = require("../models/patient");
 const Treatment = require("../models/treatment");
 const patientTreatment = require("../models/patientTreatment");
 
 class PatientTreatmentController {
   static async post(req, res) {
-    const client = await Client.findById(req.body.clientId);
+    const patient = await Patient.findById(req.body.patientId);
     const treatment = await Treatment.findById(req.body.treatmentId);
     const newPatientTreatment = new patientTreatment({
       treatment: treatment._id,
-      client: client._id,
+      patient: patient._id,
     });
 
     try {
       const result = await newPatientTreatment.save();
       const newPatientTreatmentObj = result.toObject();
-      client.patientTreatments.push(newPatientTreatmentObj._id);
-      await client.save();
+      patient.patientTreatments.push(newPatientTreatmentObj._id);
+      await patient.save();
 
       return res.status(201).json({
         ...newPatientTreatmentObj,
@@ -33,22 +33,24 @@ class PatientTreatmentController {
         .findById(id)
         .populate("reservations")
         .populate("treatment")
-        .populate("client");
+        .populate("patient");
 
       let pagado = 0;
 
       for (let reservation of TreatmentOfPatient.reservations) {
-        pagado += reservation.amountpayable;
+        pagado += reservation.amountPayable;
       }
 
       const deuda = TreatmentOfPatient.treatment.total - pagado;
 
-      const result = {
+      const patientTreatment = {
         ...TreatmentOfPatient.toObject(),
         deuda,
       };
 
-      return res.status(200).json(result);
+      return res.status(200).json({
+        patientTreatment
+      });
     } catch (error) {
       return res.status(500).end();
     }
@@ -60,14 +62,14 @@ class PatientTreatmentController {
         .find()
         .populate("reservations")
         .populate("treatment")
-        .populate("client");
+        .populate("patient");
 
       const data = [];
 
       TreatmentOfPatients.forEach((TreatmentOfPatient) => {
         let pagado = 0;
         TreatmentOfPatient.reservations.forEach((reservation) => {
-          pagado += reservation.amountpayable;
+          pagado += reservation.amountPayable;
         });
 
         const deuda = TreatmentOfPatient.treatment.total - pagado;
@@ -76,8 +78,10 @@ class PatientTreatmentController {
 
         data.push(result);
       });
+    
       return res.status(200).json(data);
     } catch (error) {
+      console.log(error)
       return res.status(500).end();
     }
   }
@@ -85,12 +89,12 @@ class PatientTreatmentController {
   static async put(req, res) {
     try {
       const { id } = req.params;
-      const client = await Client.findById(req.body.clientId);
+      const patient = await Patient.findById(req.body.patientId);
       const treatment = await Treatment.findById(req.body.treatmentId);
 
       const fields = {
         treatment: treatment._id,
-        client: client._id,
+        patient: patient._id,
       };
 
       await patientTreatment.updateOne({ _id: id }, { $set: fields });

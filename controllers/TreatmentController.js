@@ -3,7 +3,7 @@ const Treatment = require("../models/treatment");
 class TreatmentController {
   static async post(req, res) {
     const treatment = new Treatment({
-      treatment: req.body.treatment,
+      name: req.body.name,
       total: req.body.total,
     });
 
@@ -39,14 +39,14 @@ class TreatmentController {
 
   static async getAll(req, res) {
     try {
-      let treatment = await Treatment.find();
+      let treatments = await Treatment.find();
 
-      if (!treatment) {
+      if (!treatments) {
         return res.status(404).end();
       }
 
       return res.status(200).json({
-        treatment,
+        treatments,
       });
     } catch (error) {
       console.log(error);
@@ -59,7 +59,7 @@ class TreatmentController {
       const { id } = req.params;
 
       const fields = {
-        treatment: req.body.treatment,
+        name: req.body.name,
         total: req.body.total,
       };
 

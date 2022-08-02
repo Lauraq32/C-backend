@@ -1,13 +1,13 @@
 const Reservation = require("../models/reservation");
 const Doctor = require("../models/doctor");
-const Client = require("../models/client");
+const Patient = require("../models/patient");
 const patientTreatment = require("../models/patientTreatment");
 const Product = require("../models/product");
 
 class ReservationController {
   static async post(req, res) {
     const doctor = await Doctor.findById(req.body.doctorId);
-    const client = await Client.findById(req.body.clientId);
+    const patient = await Patient.findById(req.body.patientId);
     const treatment = await patientTreatment.findById(
       req.body.patientTreatmentId
     );
@@ -15,11 +15,11 @@ class ReservationController {
     const reservations = new Reservation({
       concept: req.body.concept,
       phone: req.body.phone,
-      amountpayable: req.body.amountpayable,
-      paymenttype: req.body.paymenttype,
+      amountPayable: req.body.amountPayable,
+      paymentType: req.body.paymentType,
       date: req.body.date,
       doctor: doctor._id,
-      client: client._id,
+      patient: patient._id,
       patientTreatment: treatment._id,
       products: productIds,
       percent: req.body.percent,
@@ -28,7 +28,7 @@ class ReservationController {
     try {
       reservations.save().then(async (result) => {
         const reservationObj = result.toObject();
-        client.reservations.push(reservationObj._id);
+        patient.reservations.push(reservationObj._id);
         doctor.reservations.push(reservationObj._id);
         treatment.reservations.push(reservationObj._id);
 
@@ -39,7 +39,7 @@ class ReservationController {
         }
 
         await doctor.save();
-        await client.save();
+        await patient.save();
         await treatment.save();
         return res.status(201).json({
           ...reservationObj,
@@ -55,7 +55,7 @@ class ReservationController {
     const { id } = req.params;
 
     try {
-      const clients = await Client.findById(id).populate("patientTreatments");
+      const clients = await Patient.findById(id).populate("patientTreatments");
 
       return res.status(200).json({
         clients,
@@ -133,8 +133,14 @@ class ReservationController {
     try {
       const reservations = await Reservation.find()
         .populate("doctor")
-        .populate("client")
-        .populate("patientTreatment");
+        .populate("patient")
+        .populate({
+          path: 'patientTreatment',
+          populate: {
+            path: 'treatment',
+            model: 'Treatment'
+          }
+        });
 
       return res.status(200).json({
         reservations,
@@ -162,7 +168,7 @@ class ReservationController {
     try {
       const { id } = req.params;
       const doctor = await Doctor.findById(req.body.doctorId);
-      const client = await Client.findById(req.body.clientId);
+      const patient = await Patient.findById(req.body.patientId);
       const treatment = await patientTreatment.findById(
         req.body.patientTreatmentId
       );
@@ -171,11 +177,11 @@ class ReservationController {
       const fields = {
         concept: req.body.concept,
         phone: req.body.phone,
-        amountpayable: req.body.amountpayable,
-        paymenttype: req.body.paymenttype,
+        amountPayable: req.body.amountpayable,
+        paymentType: req.body.paymenttype,
         date: req.body.date,
         doctor: doctor._id,
-        client: client._id,
+        patient: patient._id,
         patientTreatment: treatment._id,
         products: productIds,
         percent: req.body.percent,

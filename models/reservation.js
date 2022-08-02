@@ -12,16 +12,16 @@ const ReservationSchema = Schema({
         type: Date,
         required: [true, 'la fecha es necesaria'],
     },
-    amountpayable: {
+    amountPayable: {
         type: Number,
         required: [true],
     },
-    paymenttype: {
+    paymentType: {
         type: String,
         required: [true],
     },
     doctor: { type: Schema.Types.ObjectId, ref: "Doctor" },
-    client: { type: Schema.Types.ObjectId, ref: 'Client' },
+    patient: { type: Schema.Types.ObjectId, ref: 'Patient' },
     patientTreatment: { type: Schema.Types.ObjectId, ref: 'patientTreatment' },
     products: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
     percent: {

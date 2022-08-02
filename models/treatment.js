@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 const treatmentSchema = Schema({
-  treatment: {
+  name: {
     type: String,
     required: [true],
   },

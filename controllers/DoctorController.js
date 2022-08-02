@@ -4,7 +4,7 @@ const Doctor = require("../models/doctor");
 class DoctorController {
   static async post(req, res) {
     const doctor = new Doctor({
-      doctor: req.body.doctor,
+      name: req.body.name,
       phone: req.body.phone,
       totaldeganancias: 0,
     });
@@ -32,7 +32,7 @@ class DoctorController {
       let totaldeganancias = 0;
       doctor.reservations.forEach((reservation) => {
         const ganancia =
-          reservation.amountpayable * (reservation.percent / 100);
+          reservation.amountPayable * (reservation.percent / 100);
         totaldeganancias += ganancia;
       });
 
@@ -51,18 +51,18 @@ class DoctorController {
 
   static async getAll(req, res) {
     try {
-      let doctor = await Doctor.find().populate("reservations");
+      let doctors = await Doctor.find().populate("reservations");
 
-      if (!doctor) {
+      if (!doctors) {
         return res.status(404).end();
       }
 
-      doctor = doctor.map((doctora) => {
+      doctors = doctors.map((doctora) => {
         let totaldeganancias = 0;
 
         doctora.reservations.forEach((reservation) => {
           const ganancia =
-            reservation.amountpayable * (reservation.percent / 100);
+            reservation.amountPayable * (reservation.percent / 100);
           totaldeganancias += ganancia;
         });
 
@@ -73,7 +73,7 @@ class DoctorController {
       });
 
       return res.status(200).json({
-        doctor,
+        doctors,
       });
     } catch (error) {
       return res.status(500).end();
@@ -85,7 +85,7 @@ class DoctorController {
       const { id } = req.params;
 
       const fields = {
-        doctor: req.body.doctor,
+        name: req.body.name,
         phone: req.body.phone,
       };
 

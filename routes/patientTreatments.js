@@ -13,7 +13,7 @@ router.use(jwtValidations);
 const checkAdminRoleAndId = () => [AdminRole, checkId()];
 
 // read operations
-router.get("/deuda", PatientTreatmentController.getAll);
+router.get("/", PatientTreatmentController.getAll);
 router.get("/:id", checkId(), PatientTreatmentController.get);
 
 // write operations
