@@ -70,7 +70,7 @@ class PatientController {
       const { id } = req.params;
 
       const fields = {
-        patient: req.body.patient,
+        name: req.body.name,
         phone: req.body.phone,
         email: req.body.email,
         status: req.body.status,
