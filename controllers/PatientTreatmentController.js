@@ -43,15 +43,16 @@ class PatientTreatmentController {
 
       const deuda = TreatmentOfPatient.treatment.total - pagado;
 
-      const patientTreatment = {
+      const patientTreatments = {
         ...TreatmentOfPatient.toObject(),
         deuda,
       };
 
       return res.status(200).json({
-        patientTreatment
+        patientTreatments
       });
     } catch (error) {
+      console.log(error)
       return res.status(500).end();
     }
   }
