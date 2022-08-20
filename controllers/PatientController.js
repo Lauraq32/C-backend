@@ -1,5 +1,6 @@
 const { response, request } = require("express");
 const Patient = require("../models/patient");
+const patientTreatment = require("../models/patientTreatment");
 
 class PatientController {
   static async post(req, res) {
@@ -41,6 +42,21 @@ class PatientController {
     }
   }
 
+  static async getPatientTreatment(req, res) {
+    const {id} = req.params;
+
+    try {
+      const patientTreatments = await patientTreatment.find({patient: id }).populate("treatment");
+
+      return res.status(200).json({
+        patientTreatments,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).end();
+    }
+  }
+
   static async getAll(req, res) {
     try {
       let fields = ["name", "phone", "email", "status"];
@@ -50,15 +66,17 @@ class PatientController {
         return result;
       }, {});
 
-      const pipeline = [{
-        $project: {
-          ...fields,
-          visitas: { $size: "$reservations" },
+      const pipeline = [
+        {
+          $project: {
+            ...fields,
+            visitas: { $size: "$reservations" },
+          },
         },
-      }];
+      ];
       const patients = await Patient.aggregate(pipeline);
       return res.status(200).json({
-        patients
+        patients,
       });
     } catch (error) {
       return res.status(500).end();
@@ -81,7 +99,6 @@ class PatientController {
       return res.status(200).json({
         message: "paciente actualizado",
       });
-
     } catch (error) {
       return res.status(500).end();
     }

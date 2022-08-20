@@ -15,6 +15,7 @@ const checkAdminRoleAndId = () => [AdminRole, checkId()];
 // read operations
 router.get("/", PatientController.getAll);
 router.get("/:id", checkId(), PatientController.get);
+router.get("/:id/treatments", checkId(), PatientController.getPatientTreatment);
 
 // write operations
 router.post("/", validatePatient, PatientController.post);
