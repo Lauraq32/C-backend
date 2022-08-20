@@ -77,6 +77,7 @@ class PatientTreatmentController {
         const result = TreatmentOfPatient.toObject();
         result.deuda = deuda;
 
+        result.totalAmountPaid = pagado
         data.push(result);
       });
     
