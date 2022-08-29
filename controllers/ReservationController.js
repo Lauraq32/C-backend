@@ -134,6 +134,7 @@ class ReservationController {
       const reservations = await Reservation.find()
         .populate("doctor")
         .populate("patient")
+        .populate("products")
         .populate({
           path: 'patientTreatment',
           populate: {
