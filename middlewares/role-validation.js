@@ -3,7 +3,7 @@ const { response } = require('express')
 
 const AdminRole = ( req, res = response, next ) => {
 
-    const { rol, name } = payload;
+    const { rol, name } = decoded.uid;
     
     if ( rol !== 'ADMIN' ) {
         return res.status(401).json({

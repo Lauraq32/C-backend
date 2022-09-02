@@ -12,8 +12,8 @@ const jwtValidations = async (req = request, res = response, next) => {
     });
   }
   try {
-    const payload = jwt.verify(token, SECRETORPRIVATEKEY);
-    console.log(payload);
+    const decoded = jwt.verify(token, SECRETORPRIVATEKEY);
+    req.userId = decoded.uid;
     next();
   } catch (error) {
     console.log(error);
