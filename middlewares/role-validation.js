@@ -3,7 +3,7 @@ const { response } = require('express')
 
 const AdminRole = ( req, res = response, next ) => {
 
-    const { rol, name } = req.user;
+    const { rol, name } = payload;
     
     if ( rol !== 'ADMIN' ) {
         return res.status(401).json({

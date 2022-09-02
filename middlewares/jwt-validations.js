@@ -12,9 +12,8 @@ const jwtValidations = async (req = request, res = response, next) => {
     });
   }
   try {
-    const { uid } = jwt.verify(token, SECRETORPRIVATEKEY);
-    const user = await User.findById(uid);
-    req.user = user;
+    const payload = jwt.verify(token, SECRETORPRIVATEKEY);
+    console.log(payload);
     next();
   } catch (error) {
     console.log(error);
