@@ -12,8 +12,9 @@ const jwtValidations = async (req = request, res = response, next) => {
     });
   }
   try {
-    const decoded = jwt.verify(token, SECRETORPRIVATEKEY);
-    req.userId = decoded.uid;
+    const { uid } = jwt.verify(token, SECRETORPRIVATEKEY);
+    const user = await User.findById(uid);
+    req.user = user;
     next();
   } catch (error) {
     console.log(error);
