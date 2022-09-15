@@ -100,12 +100,12 @@ class ReservationController {
         _id: "$doctor",
         payments: {
           $push: {
-            amount: "$amountpayable",
+            amount: "$amountPayable",
             percent: "$percent",
             date: "$date",
           },
         },
-        total: { $sum: { $multiply: ["$amountpayable", "$percent", 0.01] } },
+        total: { $sum: { $multiply: ["$amountPayable", "$percent", 0.01] } },
       };
       const project = {
         doctorId: "$_id",
@@ -134,7 +134,6 @@ class ReservationController {
       const reservations = await Reservation.find()
         .populate("doctor")
         .populate("patient")
-        .populate("products")
         .populate({
           path: 'patientTreatment',
           populate: {
