@@ -16,7 +16,7 @@ const checkAdminRoleAndId = () => [AdminRole, checkId()];
 router.get("/", ReservationController.getAll);
 router.get("/:id", checkId(), ReservationController.getClientByTreatment);
 router.get("/date", ReservationController.getReservationByDate);
-router.get("/earnings/:id", ReservationController.getEarningsByDate);
+// router.get("/earnings/:id", ReservationController.getEarningsByDate);
 
 // write operations
 router.post("/", validateReservation, ReservationController.post);

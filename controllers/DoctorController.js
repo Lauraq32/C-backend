@@ -1,5 +1,6 @@
 const { response, request } = require("express");
 const Doctor = require("../models/doctor");
+const Reservation = require("../models/reservation");
 
 class DoctorController {
   static async post(req, res) {
@@ -45,6 +46,52 @@ class DoctorController {
         doctor: result,
       });
     } catch (error) {
+      return res.status(500).end();
+    }
+  }
+
+  static async getEarningsByDate(req, res) {
+    const { id } = req.params;
+    const firstDate = new Date(req.query.firstDate);
+    let lastDate = new Date(req.query.lastDate).getTime() + 86400000;
+    lastDate = new Date(lastDate);
+
+    try {
+      const doctor = await Doctor.findById(id);
+      const match = {
+        _id: `${req.params.id}`,
+        date: { $gte: firstDate, $lt: lastDate },
+      };
+      const group = {
+        _id: "$doctor",
+        payments: {
+          $push: {
+            amount: "$amountPayable",
+            percent: "$percent",
+            date: "$date",
+          },
+        },
+        total: { $sum: { $multiply: ["$amountPayable", "$percent", 0.01] } },
+      };
+      const project = {
+        doctorId: "$_id",
+        payments: "$payments",
+        _id: false,
+        total: "$total",
+      };
+
+      const pipeline = [
+        { $match: match },
+        { $group: group },
+        { $project: project },
+      ];
+      const earnings = await Reservation.aggregate(pipeline);
+      return res.status(200).json({
+        doctor,
+        earnings
+      });
+    } catch (error) {
+        console.log(error);
       return res.status(500).end();
     }
   }

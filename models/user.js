@@ -8,7 +8,7 @@ const UserSchema = Schema({
         type: String,
         required: [true]
     },
-    rol: {
+    role: {
         type: String,
         required: true,
         default: 'NOADMIN',
