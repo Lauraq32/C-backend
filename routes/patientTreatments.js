@@ -19,7 +19,7 @@ router.get("/:id", checkId(), PatientTreatmentController.get);
 // write operations
 router.post("/", PatientTreatmentController.post);
 router.put("/:id", checkAdminRoleAndId(), PatientTreatmentController.put);
-router.delete("/:id", checkAdminRoleAndId(), PatientTreatmentController.delete);
+// router.delete("/:id", checkAdminRoleAndId(), PatientTreatmentController.delete);
 
 router.use(validations);
 

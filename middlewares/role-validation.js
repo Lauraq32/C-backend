@@ -3,9 +3,9 @@ const { response } = require('express')
 
 const AdminRole = ( req, res = response, next ) => {
 
-    const { rol, name } = req.user;
+    const { role, name } = req.user;
     
-    if ( rol !== 'ADMIN' ) {
+    if ( role !== 'ADMIN' ) {
         return res.status(401).json({
             msg: `${ name } no tienes los permisos necesarios`
         });

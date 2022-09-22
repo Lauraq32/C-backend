@@ -1,6 +1,8 @@
 const { response, request } = require("express");
+const doctor = require("../models/doctor");
 const Doctor = require("../models/doctor");
 const Reservation = require("../models/reservation");
+const mongoose = require('mongoose');
 
 class DoctorController {
   static async post(req, res) {
@@ -51,43 +53,31 @@ class DoctorController {
   }
 
   static async getEarningsByDate(req, res) {
-    const { id } = req.params;
     const firstDate = new Date(req.query.firstDate);
     let lastDate = new Date(req.query.lastDate).getTime() + 86400000;
     lastDate = new Date(lastDate);
 
     try {
-      const doctor = await Doctor.findById(id);
       const match = {
-        _id: `${req.params.id}`,
-        date: { $gte: firstDate, $lt: lastDate },
-      };
+        date: {$gte:firstDate, $lt:lastDate},
+        doctor:  mongoose.Types.ObjectId(req.params.id)
+      }
       const group = {
-        _id: "$doctor",
-        payments: {
-          $push: {
-            amount: "$amountPayable",
-            percent: "$percent",
-            date: "$date",
-          },
-        },
-        total: { $sum: { $multiply: ["$amountPayable", "$percent", 0.01] } },
-      };
+        _id: '$doctor',
+        payments: {$push: {'amount': '$amountPayable', 'percent': '$percent', 'date': '$date'}},
+        "total": {   "$sum": { $multiply: [ "$amountPayable", "$percent", 0.01 ]} },
+      }
       const project = {
-        doctorId: "$_id",
-        payments: "$payments",
-        _id: false,
-        total: "$total",
-      };
-
-      const pipeline = [
-        { $match: match },
-        { $group: group },
-        { $project: project },
-      ];
+        doctorId: '$_id',
+        payments: '$payments',
+        "_id": false,
+        "total": '$total',
+      }
+      const pipeline = [{$match: match}, {$group: group}, {$project: project}]
+    
+    
       const earnings = await Reservation.aggregate(pipeline);
       return res.status(200).json({
-        doctor,
         earnings
       });
     } catch (error) {
@@ -146,19 +136,19 @@ class DoctorController {
     }
   }
 
-  static async delete(req, res) {
-    const { id } = req.params;
+  // static async delete(req, res) {
+  //   const { id } = req.params;
 
-    try {
-      await Doctor.findByIdAndDelete(id);
+  //   try {
+  //     await Doctor.findByIdAndDelete(id);
 
-      return res.status(200).json({
-        message: "doctora borrada",
-      });
-    } catch (error) {
-      return res.status(404).end();
-    }
-  }
+  //     return res.status(200).json({
+  //       message: "doctora borrada",
+  //     });
+  //   } catch (error) {
+  //     return res.status(404).end();
+  //   }
+  // }
 }
 
 module.exports = DoctorController;

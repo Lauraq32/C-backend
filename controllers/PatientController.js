@@ -104,19 +104,19 @@ class PatientController {
     }
   }
 
-  static async delete(req, res) {
-    const { id } = req.params;
+  // static async delete(req, res) {
+  //   const { id } = req.params;
 
-    try {
-      await Patient.findByIdAndDelete(id);
+  //   try {
+  //     await Patient.findByIdAndDelete(id);
 
-      return res.status(200).json({
-        message: "paciente borrado",
-      });
-    } catch (error) {
-      return res.status(404).end();
-    }
-  }
+  //     return res.status(200).json({
+  //       message: "paciente borrado",
+  //     });
+  //   } catch (error) {
+  //     return res.status(404).end();
+  //   }
+  // }
 }
 
 module.exports = PatientController;

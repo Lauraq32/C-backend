@@ -13,8 +13,9 @@ const PatientSchema = Schema({
         required: [true],
     },
     status: {
-        type: Boolean,
-        default: true
+        type: String,
+        default: 'activo',
+        enum: ['inacivo', 'activo']
     },
     reservations: [{ type: Schema.Types.ObjectId, ref: 'Reservation' }],
     patientTreatments: [{ type: Schema.Types.ObjectId, ref: 'patientTreatment' }]

@@ -19,6 +19,6 @@ router.get("/:id", checkId(), ProductController.get);
 // write operations
 router.post("/", validateProduct, ProductController.post);
 router.put("/:id", checkAdminRoleAndId(), validateProduct, ProductController.put);
-router.delete("/:id", checkAdminRoleAndId(), ProductController.delete);
+// router.delete("/:id", checkAdminRoleAndId(), ProductController.delete);
 
 module.exports = router;

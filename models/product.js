@@ -12,6 +12,11 @@ const ProductSchema = Schema({
         type: Number,
         required: [true, 'el precio del producto es necesario'],
     },
+    status: {
+        type: String,
+        default: 'full',
+        enum: ['low', 'full']
+    },
 });
 
 module.exports = model('Product', ProductSchema);

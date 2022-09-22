@@ -20,6 +20,6 @@ router.get("/:id/treatments", checkId(), PatientController.getPatientTreatment);
 // write operations
 router.post("/", validatePatient, PatientController.post);
 router.put("/:id", checkAdminRoleAndId(), validatePatient, PatientController.put);
-router.delete("/:id", checkAdminRoleAndId(), PatientController.delete);
+// router.delete("/:id", checkAdminRoleAndId(), PatientController.delete);
 
 module.exports = router;

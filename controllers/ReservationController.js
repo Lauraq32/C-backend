@@ -23,6 +23,7 @@ class ReservationController {
       patientTreatment: treatment._id,
       products: productIds,
       percent: req.body.percent,
+      status: req.body.status,
     });
 
     try {
@@ -153,19 +154,19 @@ class ReservationController {
     }
   }
 
-  static async delete(req, res) {
-    const { id } = req.params;
+  // static async delete(req, res) {
+  //   const { id } = req.params;
 
-    try {
-      await Reservation.findByIdAndDelete(id);
+  //   try {
+  //     await Reservation.findByIdAndDelete(id);
 
-      return res.status(200).json({
-        message: "reservacion borrada",
-      });
-    } catch (error) {
-      return res.status(404).end();
-    }
-  }
+  //     return res.status(200).json({
+  //       message: "reservacion borrada",
+  //     });
+  //   } catch (error) {
+  //     return res.status(404).end();
+  //   }
+  // }
 
   static async put(req, res) {
     try {
@@ -188,6 +189,7 @@ class ReservationController {
         patientTreatment: treatment._id,
         products: productIds,
         percent: req.body.percent,
+        status: req.body.status,
       };
 
       await Reservation.updateOne({ _id: id }, { $set: fields });

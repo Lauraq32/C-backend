@@ -12,7 +12,7 @@ class UserController {
     const user = new User({
       name: req.body.name,
       lastname: req.body.lastname,
-      rol: req.body.rol,
+      role: req.body.role,
       email: req.body.email,
       password: hash,
     });
@@ -85,7 +85,7 @@ class UserController {
       const fields = {
         name: req.body.name,
         lastname: req.body.lastname,
-        rol: req.body.rol,
+        role: req.body.role,
         email: req.body.email,
         password: hash,
       };
@@ -100,19 +100,19 @@ class UserController {
     }
   }
 
-  static async delete(req, res) {
-    const { id } = req.params;
+  // static async delete(req, res) {
+  //   const { id } = req.params;
 
-    try {
-      await User.findByIdAndDelete(id);
+  //   try {
+  //     await User.findByIdAndDelete(id);
 
-      return res.status(200).json({
-        message: "usuario borrado",
-      });
-    } catch (error) {
-      return res.status(404).end();
-    }
-  }
+  //     return res.status(200).json({
+  //       message: "usuario borrado",
+  //     });
+  //   } catch (error) {
+  //     return res.status(404).end();
+  //   }
+  // }
 }
 
 module.exports = UserController;

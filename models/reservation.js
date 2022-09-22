@@ -8,6 +8,11 @@ const ReservationSchema = Schema({
         type: String,
         required: [true],
     },
+    status: {
+        type: String,
+        default: 'pending',
+        enum: ['completed', 'canceled', 'pending']
+    },
     date: {
         type: Date,
         required: [true, 'la fecha es necesaria'],

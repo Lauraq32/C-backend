@@ -7,6 +7,7 @@ class ProductController {
       name: req.body.name,
       amount: req.body.amount,
       price: req.body.price,
+      status: req.body.status,
     });
 
     try {
@@ -63,6 +64,7 @@ class ProductController {
         name: req.body.name,
         amount: req.body.amount,
         price: req.body.price,
+        status: req.body.status,
       };
 
       await Product.updateOne({ _id: id }, { $set: fields });
@@ -75,19 +77,19 @@ class ProductController {
     }
   }
 
-  static async delete(req, res) {
-    const { id } = req.params;
+  // static async delete(req, res) {
+  //   const { id } = req.params;
 
-    try {
-      await Product.findByIdAndDelete(id);
+  //   try {
+  //     await Product.findByIdAndDelete(id);
 
-      return res.status(200).json({
-        message: "producto borrado",
-      });
-    } catch (error) {
-      return res.status(404).end();
-    }
-  }
+  //     return res.status(200).json({
+  //       message: "producto borrado",
+  //     });
+  //   } catch (error) {
+  //     return res.status(404).end();
+  //   }
+  // }
 }
 
 module.exports = ProductController;

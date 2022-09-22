@@ -73,19 +73,19 @@ class TreatmentController {
     }
   }
 
-  static async delete(req, res) {
-    const { id } = req.params;
+  // static async delete(req, res) {
+  //   const { id } = req.params;
 
-    try {
-      await Treatment.findByIdAndDelete(id);
+  //   try {
+  //     await Treatment.findByIdAndDelete(id);
 
-      return res.status(200).json({
-        message: "tratamiento borrado",
-      });
-    } catch (error) {
-      return res.status(404).end();
-    }
-  }
+  //     return res.status(200).json({
+  //       message: "tratamiento borrado",
+  //     });
+  //   } catch (error) {
+  //     return res.status(404).end();
+  //   }
+  // }
 }
 
 module.exports = TreatmentController;

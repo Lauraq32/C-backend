@@ -21,6 +21,6 @@ router.get("/date", ReservationController.getReservationByDate);
 // write operations
 router.post("/", validateReservation, ReservationController.post);
 router.put("/:id", checkAdminRoleAndId(), validateReservation, ReservationController.put);
-router.delete("/:id", checkAdminRoleAndId(), ReservationController.delete);
+// router.delete("/:id", checkAdminRoleAndId(), ReservationController.delete);
 
 module.exports = router;

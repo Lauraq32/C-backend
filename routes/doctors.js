@@ -20,6 +20,6 @@ router.get("/earnings/:id", DoctorController.getEarningsByDate);
 // write operations
 router.post("/", validateDoctor, DoctorController.post);
 router.put("/:id", checkAdminRoleAndId(), validateDoctor, DoctorController.put);
-router.delete("/:id", checkAdminRoleAndId(), DoctorController.delete);
+// router.delete("/:id", checkAdminRoleAndId(), DoctorController.delete);
 
 module.exports = router;

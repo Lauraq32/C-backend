@@ -97,6 +97,7 @@ class PatientTreatmentController {
       const fields = {
         treatment: treatment._id,
         patient: patient._id,
+        status: req.body.status
       };
 
       await patientTreatment.updateOne({ _id: id }, { $set: fields });
@@ -109,19 +110,19 @@ class PatientTreatmentController {
     }
   }
 
-  static async delete(req, res) {
-    const { id } = req.params;
+  // static async delete(req, res) {
+  //   const { id } = req.params;
 
-    try {
-      await patientTreatment.findByIdAndDelete(id);
+  //   try {
+  //     await patientTreatment.findByIdAndDelete(id);
 
-      return res.status(200).json({
-        message: "borrado exitosamente",
-      });
-    } catch (error) {
-      return res.status(404).end();
-    }
-  }
+  //     return res.status(200).json({
+  //       message: "borrado exitosamente",
+  //     });
+  //   } catch (error) {
+  //     return res.status(404).end();
+  //   }
+  // }
 }
 
 module.exports = PatientTreatmentController;

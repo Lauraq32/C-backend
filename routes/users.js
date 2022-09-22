@@ -18,7 +18,7 @@ router.get("/:id", checkId(), UserController.get);
 
 // write operations
 router.put("/:id", checkAdminRoleAndId(), validateSignup, UserController.put);
-router.delete("/:id", checkAdminRoleAndId(), UserController.delete);
+// router.delete("/:id", checkAdminRoleAndId(), UserController.delete);
 
 router.use(validations);
 

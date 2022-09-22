@@ -19,6 +19,6 @@ router.get("/:id", checkId(), TreatmentController.get);
 // write operations
 router.post("/", validateTreatment, TreatmentController.post);
 router.put("/:id", checkAdminRoleAndId(), validateTreatment, TreatmentController.put);
-router.delete("/:id", checkAdminRoleAndId(), TreatmentController.delete);
+// router.delete("/:id", checkAdminRoleAndId(), TreatmentController.delete);
 
 module.exports = router;

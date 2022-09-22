@@ -14,7 +14,7 @@ const emailIsUsed = async( email = '' ) => {
 const validateSignup = [
   check("name", "name is required").not().isEmpty(),
   check("lastname", "lastname is required").not().isEmpty(),
-  check("rol", "rol is required").not().isEmpty(),
+  check("role", "role is required").not().isEmpty(),
   check("email", "email is required").not().isEmpty(),
   check('email').custom( emailIsUsed ),
   check("password", "password is required").not().isEmpty(),
