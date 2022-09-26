@@ -14,8 +14,8 @@ const ProductSchema = Schema({
     },
     status: {
         type: String,
-        default: 'full',
-        enum: ['low', 'full']
+        default: 'lleno',
+        enum: ['bajito', 'lleno']
     },
 });
 

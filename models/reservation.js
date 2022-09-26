@@ -11,7 +11,7 @@ const ReservationSchema = Schema({
     status: {
         type: String,
         default: 'pendiente',
-        enum: ['completed', 'canceled', 'pendiente']
+        enum: ['completado', 'cancelado', 'pendiente']
     },
     date: {
         type: Date,
@@ -23,7 +23,6 @@ const ReservationSchema = Schema({
     },
     paymentType: {
         type: String,
-        required: [true],
     },
     doctor: { type: Schema.Types.ObjectId, ref: "Doctor" },
     patient: { type: Schema.Types.ObjectId, ref: 'Patient' },
