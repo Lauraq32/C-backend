@@ -10,8 +10,8 @@ const ReservationSchema = Schema({
     },
     status: {
         type: String,
-        default: 'pending',
-        enum: ['completed', 'canceled', 'pending']
+        default: 'pendiente',
+        enum: ['completed', 'canceled', 'pendiente']
     },
     date: {
         type: Date,
