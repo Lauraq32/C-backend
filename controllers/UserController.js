@@ -82,6 +82,7 @@ class UserController {
     const hash = sha256Hasher.update(req.body.password).digest("hex");
     try {
       const user = await User.findById(req.params.id);
+      
       const fields = {
         name: req.body.name,
         lastname: req.body.lastname,
@@ -89,6 +90,9 @@ class UserController {
         email: req.body.email,
         password: hash,
       };
+      //paso 1 si el usuario autenticado va a actulizar su perfil y tiene el mismo correo del req.body lo vamos a dejar para
+      //paso 2 si el usuario autenticado va a actualizar y el correo no coinciden con el mismo que esta en el req.body tengo que validar que el correo ingresado en el req.bpdy no exita
+
       if (user.userId === req.body.userId) {
         await user.updateOne({ $set: fields, password: hash });
         return res.status(200).json({
