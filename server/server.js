@@ -32,6 +32,7 @@ class Server {
         this.app.use('/api/auth', require('../routes/auth'));
         this.app.use('/api/users', require('../routes/users'));
         this.app.use('/api/health', require('../routes/healthChecker'));
+        this.app.use('/api/pagos', require('../routes/pagos'));
     }
 
     listen() {
