@@ -3,6 +3,7 @@ const Doctor = require("../models/doctor");
 const Patient = require("../models/patient");
 const patientTreatment = require("../models/patientTreatment");
 const Product = require("../models/product");
+const { addHours } = require("date-fns");
 
 class ReservationController {
   static async post(req, res) {
@@ -12,12 +13,13 @@ class ReservationController {
       req.body.patientTreatmentId
     );
     const productIds = req.body.productIds;
+    const date = addHours(new Date(req.body.date), 4)
     const reservations = new Reservation({
       concept: req.body.concept,
       phone: req.body.phone,
       amountPayable: req.body.amountPayable,
       paymentType: req.body.paymentType,
-      date: req.body.date,
+      date: date,
       doctor: doctor._id,
       patient: patient._id,
       patientTreatment: treatment._id,
@@ -138,6 +140,7 @@ class ReservationController {
       const reservations = await Reservation.find()
         .populate("doctor")
         .populate("patient")
+        .populate("products")
         .populate({
           path: 'patientTreatment',
           populate: {
@@ -176,14 +179,16 @@ class ReservationController {
       const treatment = await patientTreatment.findById(
         req.body.patientTreatmentId
       );
-      const productIds = req.body.products;
+      const productIds = req.body.productIds;
+
+      const date = addHours(new Date(req.body.date), 4)
 
       const fields = {
         concept: req.body.concept,
         phone: req.body.phone,
         amountPayable: req.body.amountPayable,
-        paymentType: req.body.paymenTtype,
-        date: req.body.date,
+        paymentType: req.body.paymentType,
+        date: date,
         doctor: doctor._id,
         patient: patient._id,
         patientTreatment: treatment._id,
