@@ -15,7 +15,7 @@ const PatientSchema = Schema({
     status: {
         type: String,
         default: 'activo',
-        enum: ['inacivo', 'activo']
+        enum: ['inactivo', 'activo']
     },
     reservations: [{ type: Schema.Types.ObjectId, ref: 'Reservation' }],
     patientTreatments: [{ type: Schema.Types.ObjectId, ref: 'patientTreatment' }]

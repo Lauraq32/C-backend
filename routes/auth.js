@@ -7,6 +7,7 @@ const validateLogin = require("../validators/validateLogin");
 // base path: api/users
 const router = Router();
 
+
 // write operations
 router.post("/signup", validateSignup, UserController.post);
 router.post("/login", validateLogin, UserController.login);

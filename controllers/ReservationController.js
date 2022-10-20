@@ -176,13 +176,13 @@ class ReservationController {
       const treatment = await patientTreatment.findById(
         req.body.patientTreatmentId
       );
-      const productIds = req.body.productIds;
+      const productIds = req.body.products;
 
       const fields = {
         concept: req.body.concept,
         phone: req.body.phone,
-        amountPayable: req.body.amountpayable,
-        paymentType: req.body.paymenttype,
+        amountPayable: req.body.amountPayable,
+        paymentType: req.body.paymenTtype,
         date: req.body.date,
         doctor: doctor._id,
         patient: patient._id,
@@ -191,6 +191,11 @@ class ReservationController {
         percent: req.body.percent,
         status: req.body.status,
       };
+
+      for (let i = 0; i < productIds.length; i++) {
+        const query = { $inc: { amount: -1 } };
+        await Product.findByIdAndUpdate(productIds[i], query);
+      }
 
       await Reservation.updateOne({ _id: id }, { $set: fields });
 

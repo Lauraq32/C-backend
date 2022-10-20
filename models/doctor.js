@@ -12,7 +12,7 @@ const DoctorSchema = Schema({
         type: Date,
     },
     reservations: [{ type: Schema.Types.ObjectId, ref: 'Reservation' }],
-    pagos: [{ type: Schema.Types.ObjectId, ref: "Pago" }],
+    payments: [{ type: Schema.Types.ObjectId, ref: "Payment" }],
 });
 
 

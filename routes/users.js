@@ -4,7 +4,7 @@ const { validations } = require("../middlewares/validations");
 const { AdminRole } = require("../middlewares/role-validation");
 const { jwtValidations } = require("../middlewares/jwt-validations");
 const UserController = require("../controllers/UserController");
-const validateSignup = require("../validators/validateSignup");
+
 
 // base path: api/users
 const router = Router();
@@ -17,7 +17,7 @@ const checkAdminRoleAndId = () => [AdminRole, checkId()];
 router.get("/:id", checkId(), UserController.get);
 
 // write operations
-router.put("/:id",  validateSignup, UserController.put);
+router.put("/:id",  UserController.put);
 // router.delete("/:id", checkAdminRoleAndId(), UserController.delete);
 
 router.use(validations);

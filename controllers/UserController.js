@@ -20,11 +20,9 @@ class UserController {
     try {
       await user.save();
       const userObj = user.toObject();
-      const token = await getJWT(user._id);
       delete userObj.password;
       return res.status(201).json({
         ...userObj,
-        token,
       });
     } catch (err) {
       console.log(err);
@@ -78,8 +76,9 @@ class UserController {
   }
 
   static async put(req, res) {
+    const { password } = req.body;
     const sha256Hasher = crypto.createHmac("sha256", SECRETORPRIVATEKEY);
-    const hash = sha256Hasher.update(req.body.password).digest("hex");
+    const hash = sha256Hasher.update(password).digest("hex");
     try {
       const user = await User.findById(req.params.id);
       

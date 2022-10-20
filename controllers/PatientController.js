@@ -17,6 +17,7 @@ class PatientController {
 
       return res.status(201).json(data);
     } catch (err) {
+      console.log(err)
       return res.status(500).end();
     }
   }

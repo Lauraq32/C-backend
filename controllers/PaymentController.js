@@ -1,11 +1,11 @@
 const { response, request } = require("express");
-const Pago = require("../models/pago");
+const Payment = require("../models/payment");
 const Doctor = require("../models/doctor");
 
 class PagoController {
   static async post(req, res) {
     const doctor = await Doctor.findById(req.body.doctorId);
-    const pagos = new Pago({
+    const payment = new Payment({
       status: req.body.status,
       date: req.body.date,
       doctor: doctor._id,
@@ -13,13 +13,13 @@ class PagoController {
     });
 
     try {
-      pagos.save().then(async (result) => {
-        const pagoObj = result.toObject();
-        // doctor.pagos.push(pagoObj._id);
+      payment.save().then(async (result) => {
+        const paymentObj = result.toObject();
+        doctor.payments.push(paymentObj._id);
 
         await doctor.save();
         return res.status(201).json({
-            ...pagoObj,
+            ...paymentObj,
         });
       })
     } catch (err) {
@@ -30,10 +30,10 @@ class PagoController {
 
   static async getAll(req, res) {
     try {
-      let pagos = await Pago.find();
+      let payments = await Payment.find().populate("doctor");
 
       return res.status(200).json({
-        pagos,
+        payments,
       });
     } catch (error) {
       return res.status(500).end();
@@ -52,7 +52,7 @@ class PagoController {
         amount: req.body.amount,
       };
 
-      await Pago.updateOne({ _id: id }, { $set: fields });
+      await Payment.updateOne({ _id: id }, { $set: fields });
 
       return res.status(200).json({
         message: "Exito",

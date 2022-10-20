@@ -1,5 +1,4 @@
 const { response, request } = require("express");
-const doctor = require("../models/doctor");
 const Doctor = require("../models/doctor");
 const Reservation = require("../models/reservation");
 const mongoose = require('mongoose');
@@ -88,7 +87,7 @@ class DoctorController {
 
   static async getAll(req, res) {
     try {
-      let doctors = await Doctor.find().populate("reservations");
+      let doctors = await Doctor.find().populate("reservations").populate("payments");
 
       if (!doctors) {
         return res.status(404).end();
@@ -113,6 +112,7 @@ class DoctorController {
         doctors,
       });
     } catch (error) {
+      console.log(error)
       return res.status(500).end();
     }
   }

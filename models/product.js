@@ -17,6 +17,10 @@ const ProductSchema = Schema({
         default: 'lleno',
         enum: ['bajito', 'lleno']
     },
+    date: {
+        type: Date,
+        required: [true, 'la fecha es necesaria'],
+    },
 });
 
 module.exports = model('Product', ProductSchema);
