@@ -18,7 +18,7 @@ const validateSignup = [
   check("email", "email is required").not().isEmpty(),
   check('email').custom( emailIsUsed ),
   check("password", "password is required").not().isEmpty(),
-  check('password', 'The password needs to be least 6 characters long').isLength({ min: 6 }),
+  check('password', 'La Contraseña debe de tener como minimo 6 caracteres').isLength({ min: 6 }),
   validations
 ];
 

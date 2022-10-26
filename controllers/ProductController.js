@@ -66,7 +66,7 @@ class ProductController {
         amount: req.body.amount,
         price: req.body.price,
         status: req.body.status,
-        date: req.body.date
+        date: req.body.date,
       };
 
       await Product.updateOne({ _id: id }, { $set: fields });
