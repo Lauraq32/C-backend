@@ -6,11 +6,9 @@ const PatientSchema = Schema({
     },
     phone: {
         type: String,
-        required: [true],
     },
     email: {
         type: String,
-        required: [true],
     },
     status: {
         type: String,

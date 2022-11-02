@@ -6,11 +6,9 @@ const ProductSchema = Schema({
     },
     amount: {
         type: Number,
-        required: [true, 'la cantidad del producto es necesaria'],
     },
     price: {
         type: Number,
-        required: [true, 'el precio del producto es necesario'],
     },
     status: {
         type: String,
@@ -19,7 +17,6 @@ const ProductSchema = Schema({
     },
     date: {
         type: Date,
-        required: [true, 'la fecha es necesaria'],
     },
 });
 

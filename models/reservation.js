@@ -2,11 +2,9 @@ const { Schema, model} = require('mongoose');
 const ReservationSchema = Schema({
     concept: {
         type: String,
-        required: [true],
     },
     phone: {
         type: String,
-        required: [true],
     },
     status: {
         type: String,
@@ -15,11 +13,9 @@ const ReservationSchema = Schema({
     },
     date: {
         type: Date,
-        required: [true, 'la fecha es necesaria'],
     },
     amountPayable: {
         type: Number,
-        required: [true],
     },
     paymentType: {
         type: String,

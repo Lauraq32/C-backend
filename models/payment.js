@@ -3,7 +3,6 @@ const PaymentSchema = Schema({
     doctor: { type: Schema.Types.ObjectId, ref: "Doctor" },
     amount: {
         type: Number,
-        required: [true, 'la cantidad del producto es necesaria'],
     },
     date: {
         type: Date,

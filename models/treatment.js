@@ -6,7 +6,6 @@ const treatmentSchema = Schema({
   },
   total: {
     type: Number,
-    required: [true],
   },
 });
 
