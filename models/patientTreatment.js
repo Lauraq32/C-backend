@@ -6,7 +6,7 @@ const schema = Schema({
     default: 'activo',
     enum: ['suspendido', 'completado', 'activo']
 },
-  treatment: {type: Schema.Types.ObjectId, ref: 'Treatment'},
+  treatment: [{type: Schema.Types.ObjectId, ref: 'Treatment'}],
   patient: { type: Schema.Types.ObjectId, ref: 'Patient' },
   reservations: [{ type: Schema.Types.ObjectId, ref: "Reservation" }],
 });

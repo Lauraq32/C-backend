@@ -1,13 +1,15 @@
 const Patient = require("../models/patient");
 const Treatment = require("../models/treatment");
 const patientTreatment = require("../models/patientTreatment");
+const total = require("../models/treatment");
+const treatment = require("../models/treatment");
 
 class PatientTreatmentController {
   static async post(req, res) {
     const patient = await Patient.findById(req.body.patientId);
-    const treatment = await Treatment.findById(req.body.treatmentId);
+    const treatmentIds = req.body.treatmentIds;
     const newPatientTreatment = new patientTreatment({
-      treatment: treatment._id,
+      treatment: treatmentIds,
       patient: patient._id,
     });
 
@@ -41,7 +43,10 @@ class PatientTreatmentController {
         pagado += reservation.amountPayable;
       }
 
-      const deuda = TreatmentOfPatient.treatment.total - pagado;
+      const deudaTotal = TreatmentOfPatient.treatment
+        .map((x) => x.total)
+        .reduce((accumulator, currentValue) => accumulator + currentValue);
+      const deuda = deudaTotal - pagado;
 
       const patientTreatments = {
         ...TreatmentOfPatient.toObject(),
@@ -49,10 +54,10 @@ class PatientTreatmentController {
       };
 
       return res.status(200).json({
-        patientTreatments
+        patientTreatments,
       });
     } catch (error) {
-      console.log(error)
+      console.log(error);
       return res.status(500).end();
     }
   }
@@ -73,17 +78,23 @@ class PatientTreatmentController {
           pagado += reservation.amountPayable;
         });
 
-        const deuda = TreatmentOfPatient.treatment.total - pagado;
+        // const deuda = TreatmentOfPatient.treatment.forEach((treatment) => {
+        //   treatment.total += total - pagado;
+        // });
+        const deudaTotal = TreatmentOfPatient.treatment
+          .map((x) => x.total)
+          .reduce((accumulator, currentValue) => accumulator + currentValue);
+        const deuda = deudaTotal - pagado;
         const result = TreatmentOfPatient.toObject();
         result.deuda = deuda;
 
-        result.totalAmountPaid = pagado
+        result.totalAmountPaid = pagado;
         data.push(result);
       });
-    
+
       return res.status(200).json(data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       return res.status(500).end();
     }
   }
@@ -92,12 +103,12 @@ class PatientTreatmentController {
     try {
       const { id } = req.params;
       const patient = await Patient.findById(req.body.patientId);
-      const treatment = await Treatment.findById(req.body.treatmentId);
+      const treatmentIds = req.body.treatmentIds;
 
       const fields = {
-        treatment: treatment._id,
+        treatment: treatmentIds,
         patient: patient._id,
-        status: req.body.status
+        status: req.body.status,
       };
 
       await patientTreatment.updateOne({ _id: id }, { $set: fields });

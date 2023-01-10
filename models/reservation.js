@@ -22,7 +22,7 @@ const ReservationSchema = Schema({
     },
     doctor: { type: Schema.Types.ObjectId, ref: "Doctor" },
     patient: { type: Schema.Types.ObjectId, ref: 'Patient' },
-    patientTreatment: { type: Schema.Types.ObjectId, ref: 'patientTreatment' },
+    patientTreatment: [{ type: Schema.Types.ObjectId, ref: 'patientTreatment' }],
     products: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
     percent: {
         type: Number,
